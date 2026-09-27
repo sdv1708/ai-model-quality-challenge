@@ -2,6 +2,12 @@
 
 Welcome, and thanks for taking the time. This challenge has two independent tasks.
 
+## Local development
+
+Task 1 backend setup and verification commands live in
+[`backend/README.md`](./backend/README.md). The backend uses Python 3.12, FastAPI,
+Pydantic, openpyxl, pytest, Ruff, and mypy, with dependencies managed by `uv`.
+
 Read each task's spec in full before starting. Each lists hard requirements and a
 set of **forbidden trivial baselines** that will not pass the rubric.
 
