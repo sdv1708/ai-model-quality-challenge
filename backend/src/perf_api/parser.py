@@ -67,6 +67,19 @@ def parse_and_normalize_workbook(file_bytes: bytes, filename: str) -> WorkbookNo
     while True:
         batch_size_val = sheet.cell(row=row_idx, column=col_map["Batch Size"]).value
         if batch_size_val is None:
+            if any(
+                sheet.cell(row=row_idx, column=col_map[col]).value is not None
+                for col in EXPECTED_COLUMNS
+            ):
+                raise WorkbookParseError(
+                    f"Null value encountered at row {row_idx}, column 'Batch Size'"
+                )
+            if any(
+                sheet.cell(row=later_row, column=column).value is not None
+                for later_row in range(row_idx + 1, sheet.max_row + 1)
+                for column in col_map.values()
+            ):
+                raise WorkbookParseError(f"Unexpected blank row at row {row_idx} before more data")
             break  # Reached end of data table
 
         row_data: dict[str, Any] = {}
