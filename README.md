@@ -8,6 +8,10 @@ Task 1 backend setup and verification commands live in
 [`backend/README.md`](./backend/README.md). The backend uses Python 3.12, FastAPI,
 Pydantic, openpyxl, pytest, Ruff, and mypy, with dependencies managed by `uv`.
 
+Task 1 frontend setup, launch, and browser-test commands live in
+[`frontend/README.md`](./frontend/README.md). Run the backend and frontend together
+to upload a workbook or inspect the bundled sample through the real API.
+
 Read each task's spec in full before starting. Each lists hard requirements and a
 set of **forbidden trivial baselines** that will not pass the rubric.
 
