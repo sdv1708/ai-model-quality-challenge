@@ -1,8 +1,4 @@
-"""HTTP contract for the workload decision endpoint.
-
-TODO(issue #4): Enable the success case after the pure evaluator works. Add a
-request with missing assumptions and verify that unknowns survive serialization.
-"""
+"""HTTP contract for the workload decision endpoint."""
 
 from pathlib import Path
 from zipfile import ZipFile
@@ -38,7 +34,6 @@ def test_decision_route_validates_target_units(decision_payload: dict[str, objec
     assert response.status_code == 422
 
 
-@pytest.mark.skip(reason="TODO(issue #4): Enable after implementing the evaluator")
 def test_decision_route_returns_typed_evidence(decision_payload: dict[str, object]) -> None:
     """Serialize status, selected configuration, and explanatory evidence."""
     response = CLIENT.post("/api/v1/decisions/evaluate", json=decision_payload)
@@ -49,3 +44,18 @@ def test_decision_route_returns_typed_evidence(decision_payload: dict[str, objec
     assert body["model_name"] == "Model A"
     assert body["selected_record"] is not None
     assert body["evidence"]
+    assert body["evaluated_configurations"]
+
+
+def test_decision_route_preserves_unknown_evidence(decision_payload: dict[str, object]) -> None:
+    """A missing context assumption stays unknown in the JSON response."""
+    decision_payload["targets"] = {"min_context_window_tokens": 12_000}
+
+    response = CLIENT.post("/api/v1/decisions/evaluate", json=decision_payload)
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["status"] == "insufficient_data"
+    assert body["unknown_constraints"] == ["context"]
+    assert body["evidence"][0]["outcome"] == "unknown"
+    assert body["evidence"][0]["target"] == 12_000

@@ -20,8 +20,6 @@ class WorkloadTargets(BaseModel):
     be replaced with an invented default. Token rates are tokens/second, TTFT
     is milliseconds, and the cost ceiling is USD per million tokens.
 
-    TODO(issue #4): Revisit these fields only if the decision rules reveal a
-    missing unit or a necessary distinction between scenario and threshold.
     """
 
     input_tokens: int | None = Field(default=None, gt=0)
@@ -72,20 +70,32 @@ class ConstraintEvidence(BaseModel):
     explanation: str
 
 
+class ConfigurationEvaluation(BaseModel):
+    """Constraint results for one complete projected configuration."""
+
+    record: PerformanceRecord
+    evidence: list[ConstraintEvidence]
+    unmet_constraints: list[MetricName]
+    unknown_constraints: list[MetricName]
+
+
 class WorkloadDecision(BaseModel):
     """Verdict and supporting evidence for one normalized projection sweep.
 
-    selected_record is one whole configuration, or None when no scenario row
-    applies. unmet_constraints names checked failures; unknown_constraints
-    names checks blocked by missing facts. A go is conditional on projections
-    and listed assumptions, not a production performance guarantee.
+    selected_record and top-level evidence describe the representative row.
+    evaluated_configurations show why other matching rows did or did not pass.
+    unmet_constraints names checked failures; unknown_constraints names checks
+    blocked by missing facts. A go is conditional on projections and listed
+    assumptions, not a production performance guarantee.
     """
 
     status: DecisionStatus
     model_name: str
     profile_id: str
     selected_record: PerformanceRecord | None
+    selection_explanation: str
     evidence: list[ConstraintEvidence]
+    evaluated_configurations: list[ConfigurationEvaluation]
     unmet_constraints: list[MetricName]
     unknown_constraints: list[MetricName]
     assumptions: list[str]
