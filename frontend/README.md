@@ -1,6 +1,8 @@
 # Performance Studio frontend
 
-This React and TypeScript frontend uses the single-workbook normalization API from issue #2. It accepts a local `.xlsx` workbook or loads the bundled Model A sample. Both paths send the workbook to `POST /api/v1/workbooks/normalize`, then show a normalized summary and configuration table.
+This React and TypeScript frontend accepts a local `.xlsx` workbook or loads the bundled Model A sample. Both paths send the workbook to `POST /api/v1/workbooks/normalize`. The customer decision form then sends that normalized response, explicit targets, and optional assumptions to `POST /api/v1/decisions/evaluate`.
+
+The result leads with a go, no-go, or needs-data verdict, evidence for each requested limit, the representative configuration, and projection assumptions. Customers can expand every matching configuration and inspect the normalized workbook below. Empty target fields are not checked; an absent supported context window or box-hour price stays unknown when the relevant limit needs it. The hardware cost estimate assumes sustained projected capacity and is not a customer price.
 
 ## Prerequisites
 
@@ -36,7 +38,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-The browser tests start both servers, upload a valid workbook, submit one with a missing `Batch Size` column, and recover by loading the sample. Python API tests remain in `backend/`.
+The browser tests start both servers and cover upload validation, recovery, customer decisions, missing cost assumptions, and a narrow viewport. Python API tests remain in `backend/`.
 
 ## Deployment configuration
 
