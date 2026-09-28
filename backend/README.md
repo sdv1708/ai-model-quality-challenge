@@ -47,8 +47,9 @@ is not implemented yet. A valid request currently returns `501 Not Implemented`.
 Invalid request fields, such as a negative minimum throughput, return `422`.
 Use `ISSUE_4_GUIDE.md` for the implementation order and behavior cases.
 
-Once implemented, describe here how a configuration is selected, what each status
-means, the cost formula and its assumptions, and a complete request/response example.
+TODO (Issue #4): Once implemented, describe how a configuration is selected, what
+each status means, the cost formula and its assumptions, and a complete
+request/response example. Replace the 501 description with the working behavior.
 The workbook values are projections, not production measurements.
 
 ## Verify changes

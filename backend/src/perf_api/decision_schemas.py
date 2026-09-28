@@ -12,7 +12,17 @@ EvidenceOutcome = Literal["met", "unmet", "unknown"]
 
 
 class WorkloadTargets(BaseModel):
-    """Customer-supplied workload shape and optional decision thresholds."""
+    """Customer request: scenario first, then optional acceptance thresholds.
+
+    input_tokens, output_tokens, and cache_fraction identify the workload shape
+    represented by a projected row. The remaining fields are constraints to
+    check. None means the caller did not supply that fact or limit; it must not
+    be replaced with an invented default. Token rates are tokens/second, TTFT
+    is milliseconds, and the cost ceiling is USD per million tokens.
+
+    TODO(issue #4): Revisit these fields only if the decision rules reveal a
+    missing unit or a necessary distinction between scenario and threshold.
+    """
 
     input_tokens: int | None = Field(default=None, gt=0)
     output_tokens: int | None = Field(default=None, gt=0)
@@ -25,7 +35,13 @@ class WorkloadTargets(BaseModel):
 
 
 class DecisionAssumptions(BaseModel):
-    """Facts unavailable in the workbook that a caller may explicitly supply."""
+    """Caller-supplied facts that the workbook does not establish.
+
+    context_window_tokens is the supported model/service limit, not the input
+    length of a projected scenario. hardware_cost_usd_per_box_hour is an input
+    to a capacity-based cost estimate, not a published customer price. Record
+    supplied values and their limitations in the decision response.
+    """
 
     context_window_tokens: int | None = Field(default=None, gt=0)
     hardware_cost_usd_per_box_hour: float | None = Field(default=None, ge=0)
@@ -40,7 +56,13 @@ class WorkloadDecisionRequest(BaseModel):
 
 
 class ConstraintEvidence(BaseModel):
-    """A threshold comparison or an explanation of why it cannot be made."""
+    """One requested check, including its inputs and its result.
+
+    For met/unmet, actual and target make the comparison reproducible. For
+    unknown, leave unavailable values as None and explain which fact is absent.
+    Use the same unit for actual and target. The metric identifies which of the
+    five supported constraints the evidence describes.
+    """
 
     metric: MetricName
     outcome: EvidenceOutcome
@@ -51,7 +73,13 @@ class ConstraintEvidence(BaseModel):
 
 
 class WorkloadDecision(BaseModel):
-    """Explainable result for one workbook and one set of workload targets."""
+    """Verdict and supporting evidence for one normalized projection sweep.
+
+    selected_record is one whole configuration, or None when no scenario row
+    applies. unmet_constraints names checked failures; unknown_constraints
+    names checks blocked by missing facts. A go is conditional on projections
+    and listed assumptions, not a production performance guarantee.
+    """
 
     status: DecisionStatus
     model_name: str

@@ -3,6 +3,7 @@
 The workbook parser already returns one `WorkbookNormalizationResponse` containing
 `PerformanceRecord` rows. Each row is a projected configuration. Issue #4 turns those
 rows and explicit customer targets into a decision that can be explained and tested.
+The implementation contract and numbered TODOs are in `src/perf_api/decision.py`.
 
 ## Fill these files in order
 

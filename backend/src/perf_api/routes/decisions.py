@@ -10,7 +10,13 @@ router = APIRouter(prefix="/api/v1/decisions", tags=["decisions"])
 
 @router.post("/evaluate", response_model=WorkloadDecision)
 def evaluate_decision(request: WorkloadDecisionRequest) -> WorkloadDecision:
-    """Evaluate an already-normalized workbook against explicit workload targets."""
+    """Validate the JSON contract and delegate all decision rules to the domain function.
+
+    Send the normalization endpoint's response as workbook, plus targets and
+    assumptions. FastAPI/Pydantic reject malformed inputs before this function
+    runs. The temporary 501 response makes the unimplemented evaluator explicit.
+    """
+    # TODO(issue #4): Remove the temporary 501 mapping after the evaluator works.
     try:
         return evaluate_workload(request.workbook, request.targets, request.assumptions)
     except NotImplementedError as err:

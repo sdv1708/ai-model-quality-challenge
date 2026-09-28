@@ -1,4 +1,8 @@
-"""HTTP contract for the workload decision endpoint."""
+"""HTTP contract for the workload decision endpoint.
+
+TODO(issue #4): Enable the success case after the pure evaluator works. Add a
+request with missing assumptions and verify that unknowns survive serialization.
+"""
 
 from pathlib import Path
 from zipfile import ZipFile
@@ -26,6 +30,7 @@ def decision_payload() -> dict[str, object]:
 
 
 def test_decision_route_validates_target_units(decision_payload: dict[str, object]) -> None:
+    """Reject a negative minimum before executing decision rules."""
     decision_payload["targets"] = {"min_throughput_tps": -1}
 
     response = CLIENT.post("/api/v1/decisions/evaluate", json=decision_payload)
@@ -33,8 +38,9 @@ def test_decision_route_validates_target_units(decision_payload: dict[str, objec
     assert response.status_code == 422
 
 
-@pytest.mark.skip(reason="Enable when issue #4 decision rules are implemented")
+@pytest.mark.skip(reason="TODO(issue #4): Enable after implementing the evaluator")
 def test_decision_route_returns_typed_evidence(decision_payload: dict[str, object]) -> None:
+    """Serialize status, selected configuration, and explanatory evidence."""
     response = CLIENT.post("/api/v1/decisions/evaluate", json=decision_payload)
 
     assert response.status_code == 200
