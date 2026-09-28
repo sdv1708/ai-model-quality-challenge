@@ -5,6 +5,7 @@ from typing import Literal
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from perf_api.routes.decisions import router as decisions_router
 from perf_api.routes.workbooks import router as workbooks_router
 
 
@@ -17,11 +18,12 @@ class HealthResponse(BaseModel):
 
 app = FastAPI(
     title="Performance Workbook API",
-    description="Normalize uploaded performance projections into typed records.",
+    description="Normalize uploaded performance projections and evaluate workload targets.",
     version="0.1.0",
 )
 
 app.include_router(workbooks_router)
+app.include_router(decisions_router)
 
 
 @app.get("/health", response_model=HealthResponse, tags=["system"])

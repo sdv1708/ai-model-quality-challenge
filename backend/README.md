@@ -35,6 +35,22 @@ Sample `.xlsx` files are inside the repository's `perf_data.zip`. The endpoint r
 `400` for a filename without the `.xlsx` extension and `422` for an invalid workbook
 or invalid workbook data.
 
+## Workload decision scaffold (Issue #4)
+
+`POST /api/v1/decisions/evaluate` accepts JSON with three required objects:
+`workbook` (the response from `/api/v1/workbooks/normalize`), `targets`, and
+`assumptions`. The target and assumption fields are defined in
+`src/perf_api/decision_schemas.py` and shown in `/docs`.
+
+The route is registered, but the learner-owned evaluator in `src/perf_api/decision.py`
+is not implemented yet. A valid request currently returns `501 Not Implemented`.
+Invalid request fields, such as a negative minimum throughput, return `422`.
+Use `ISSUE_4_GUIDE.md` for the implementation order and behavior cases.
+
+Once implemented, describe here how a configuration is selected, what each status
+means, the cost formula and its assumptions, and a complete request/response example.
+The workbook values are projections, not production measurements.
+
 ## Verify changes
 
 ```powershell
