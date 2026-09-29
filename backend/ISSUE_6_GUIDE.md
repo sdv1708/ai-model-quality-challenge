@@ -1,8 +1,8 @@
-# Issue #6: multi-upload comparison starter
+# Issue #6: multi-upload comparison
 
-This branch is a **scaffold**, not a completed comparison feature. The new
-`POST /api/v1/comparisons/workbooks` route currently returns HTTP 501. The
-single-workbook normalization and workload-decision endpoints still work.
+`POST /api/v1/comparisons/workbooks` accepts one or more `.xlsx` files under
+the repeated `workbooks` multipart field. The existing single-workbook
+normalization and workload-decision endpoints remain available.
 
 Issue: https://github.com/sdv1708/ai-model-quality-challenge/issues/6
 
@@ -24,19 +24,31 @@ different key is an explicit coverage gap, not a zero or a losing score.
 only one uploaded model, the same pipeline returns its rows with no pairwise
 comparison. Confirm the key policy before coding, especially how to compare
 floating cache fractions and whether profile IDs denote equivalent traffic.
+The implementation rounds cache fractions to four decimal places for both
+duplicate detection and alignment; this is a comparison policy, not a change
+to the original projected value.
+
+Identical repeated sweeps are compared once and produce a `DUPLICATE_SWEEP`
+diagnostic. Conflicting uploads claiming the same model/profile are all
+excluded with `CONFLICTING_SWEEP`. A sweep with duplicate configuration rows is
+excluded with `DUPLICATE_CONFIGURATION`, so the customer decision path cannot
+use rows the comparison rejected. These policies keep
+the response independent of upload order. A batch with at least one usable
+configuration returns 200 and any diagnostics; a batch with none returns 422
+with file or alignment diagnostics in `detail`.
 
 Keep customer workload decisions separate from row alignment. Issue #4's
 `evaluate_workload` answers whether **one sweep** meets explicit targets; it
 may select a different viable batch for each model. A direct metric comparison
 should use aligned rows. A customer decision comparison may show model verdicts
 side by side, but must disclose differing configurations and missing evidence.
-The current scaffold does not choose a cross-model winner.
+The comparison API does not choose a cross-model winner.
 
 ## Code map
 
 - `src/perf_api/comparison_schemas.py`: response types and comparison key.
-- `src/perf_api/comparison.py`: pure alignment function to implement.
-- `src/perf_api/routes/comparisons.py`: multipart upload route to implement.
+- `src/perf_api/comparison.py`: pure alignment and duplicate policy.
+- `src/perf_api/routes/comparisons.py`: multipart ingestion and error response.
 - `src/perf_api/main.py`: registers the route.
 - `src/perf_api/parser.py`: existing single-file parser to reuse. Improve it
   only if a concrete comparison case proves the current filename/validation
@@ -44,16 +56,15 @@ The current scaffold does not choose a cross-model winner.
 - `src/perf_api/decision.py`: existing per-sweep decision evaluator; do not
   copy its threshold logic into the comparison function.
 
-## Fill in this order
+## Review and extend in this order
 
 1. **Define comparability.** Inspect supplied files from at least two models
    and profiles. Write down the canonical key, cache tolerance, model-name
    normalization, duplicate policy, and how a single model is represented.
-   Revise `comparison_schemas.py` before wiring the route.
+   Revise `comparison_schemas.py` if the contract changes.
 2. **Handle duplicate identity.** In `comparison.py`, identify duplicate
    `(model_name, profile_id)` sweeps and duplicate configuration keys within
-   one sweep. Choose a deterministic policy: reject ambiguous duplicates or
-   return explicit diagnostics; never silently keep whichever arrived first.
+   one sweep. Preserve the deterministic policy described above.
 3. **Align records.** Group by canonical key, track each contributing model,
    mark groups with at least two models comparable, and list missing models.
    Preserve the original projected metrics and their units. Do not fill gaps
@@ -61,20 +72,19 @@ The current scaffold does not choose a cross-model winner.
 4. **Make output order stable.** Sort model names, keys, group members, and
    diagnostics. Reversed upload order should yield the same response content.
    Decide whether filename affects diagnostic ordering.
-5. **Wire multipart ingestion.** In `routes/comparisons.py`, validate a
-   nonempty list of `.xlsx` files, call the existing parser once per file,
-   then call the pure comparison function. Pick and document a policy for a
-   mixed valid/invalid batch. If rejected, name every failed file and reason
-   in the error response. Keep the old one-file route for compatibility.
+5. **Check multipart ingestion.** In `routes/comparisons.py`, validate `.xlsx`
+   filenames, call the existing parser once per file, then call the pure
+   comparison function. A mixed batch keeps usable files and reports failed
+   ones. An all-invalid batch returns 422. Keep the old one-file route for
+   compatibility.
 6. **Write behavior tests.** Use real workbooks through the HTTP test client:
    one file, several supplied models, two profiles, shuffled upload order,
    unseen `Model L`, duplicate sweep, duplicate row key, missing batch/profile,
    and invalid or incomplete workbook. Assert statuses, identities, aligned
    keys, gaps, and diagnostics rather than private helper calls.
-7. **Connect the frontend.** Let the file input select multiple files and
-   send them in one multipart request. Show comparable groups and coverage
-   gaps in both audience views. Keep the current single-upload path working
-   until the new route and UI are verified end to end.
+7. **Verify the frontend.** Select multiple files in one multipart request.
+   Check comparable groups, gaps, and customer decisions in both audience
+   views. Keep the single-upload and sample paths working end to end.
 
 ## Suggested public request
 
@@ -86,6 +96,6 @@ curl.exe -F "workbooks=@Model A profile 1.xlsx" `
   http://127.0.0.1:8000/api/v1/comparisons/workbooks
 ```
 
-The command currently receives HTTP 501. It becomes a smoke test after step 5.
+The command returns the typed comparison response for valid files.
 From `backend/`, run `uv run pytest`, `uv run ruff check .`,
 `uv run ruff format --check .`, and `uv run mypy` after implementation slices.

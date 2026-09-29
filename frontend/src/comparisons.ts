@@ -39,8 +39,13 @@ function errorDetail(body: unknown): string | null {
   if (Array.isArray(detail)) {
     const messages = detail
       .map((item) => {
-        if (!item || typeof item !== 'object' || !('msg' in item)) return null
-        return typeof item.msg === 'string' ? item.msg : null
+        if (!item || typeof item !== 'object') return null
+        if ('message' in item && typeof item.message === 'string') {
+          const filename =
+            'filename' in item && typeof item.filename === 'string' ? item.filename : ''
+          return filename ? `${filename}: ${item.message}` : item.message
+        }
+        return 'msg' in item && typeof item.msg === 'string' ? item.msg : null
       })
       .filter((message): message is string => message !== null)
     return messages.length ? messages.join('; ') : null

@@ -1,21 +1,14 @@
-"""Public shapes for comparing one or more normalized performance sweeps.
+"""Public shapes for comparing one or more normalized performance sweeps."""
 
-These are starter contracts for issue #6. The learner should revise them when
-the comparison rules are settled, before implementing the HTTP endpoint.
-"""
-
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from perf_api.schemas import PerformanceRecord, WorkbookNormalizationResponse
 
 
 class ConfigurationKey(BaseModel):
-    """Dimensions that must match before projected metrics are compared.
+    """Dimensions that must match before projected metrics are compared."""
 
-    TODO(issue #6, step 1): Confirm this exact-match policy against the supplied
-    workbooks. Define how cache fractions are canonicalized and whether a profile
-    identifier alone is sufficient to describe the same traffic scenario.
-    """
+    model_config = ConfigDict(frozen=True)
 
     profile_id: str
     input_length: int

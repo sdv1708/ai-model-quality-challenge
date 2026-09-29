@@ -96,6 +96,22 @@ The sample yields `go` with batch size `20` and three met checks. The values
 remain workbook projections, not measured production performance. See
 `ISSUE_4_GUIDE.md` for the code map and test cases.
 
+## Compare one or many workbooks (Issue #6)
+
+`POST /api/v1/comparisons/workbooks` accepts repeated `workbooks` multipart
+fields. It runs every file through the existing parser, then aligns projected
+rows by profile, input and output lengths, cache fraction, and batch size.
+The response lists models, normalized workbooks, aligned configurations,
+missing models, and diagnostics. One file uses the same path and has no
+pairwise-comparable rows.
+
+Identical repeated model/profile sweeps are compared once with a diagnostic.
+Conflicting sweeps and sweeps with duplicate configuration rows are excluded;
+they are never resolved by upload order. A mixed batch returns its
+usable comparisons and file-specific diagnostics. If no usable configuration
+remains, the endpoint returns `422` with diagnostics in `detail`. See
+`ISSUE_6_GUIDE.md` for the comparison policy and test cases.
+
 ## Verify changes
 
 ```powershell
