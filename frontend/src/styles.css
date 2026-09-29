@@ -822,6 +822,98 @@ tbody th {
 .decision-section {
   padding-top: 74px;
 }
+.comparison-section {
+  padding-top: 74px;
+}
+.comparison-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.comparison-heading h2 {
+  font-size: clamp(32px, 3vw, 43px);
+  letter-spacing: -0.055em;
+  margin-bottom: 10px;
+}
+.comparison-heading p,
+.comparison-note {
+  color: #637488;
+  line-height: 1.5;
+}
+.comparison-heading p {
+  margin-bottom: 0;
+}
+.comparison-panel h3 {
+  margin-top: 28px;
+}
+.comparison-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 180px) minmax(0, 1fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+.comparison-controls label,
+.comparison-workbook-choice label {
+  display: grid;
+  gap: 7px;
+  color: #243849;
+  font-size: 13px;
+  font-weight: 700;
+}
+.comparison-controls select,
+.comparison-workbook-choice select {
+  min-height: 43px;
+  width: 100%;
+  border: 1px solid #cbd9d9;
+  border-radius: 8px;
+  background: #fff;
+  color: #112136;
+  padding: 9px 11px;
+}
+.comparison-controls select:focus-visible,
+.comparison-workbook-choice select:focus-visible {
+  outline: 3px solid #237966;
+  outline-offset: 2px;
+}
+.comparison-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  align-items: baseline;
+  border-top: 1px solid #e2e9e9;
+  padding-top: 18px;
+  color: #1d604f;
+}
+.comparison-status span {
+  color: #637488;
+  font-size: 12px;
+}
+.comparison-note {
+  font-size: 13px;
+}
+.comparison-diagnostics {
+  margin-bottom: 18px;
+  border-color: #eddfc4;
+  background: #fffaf0;
+}
+.comparison-diagnostics h3 {
+  margin: 0;
+}
+.comparison-diagnostics ul {
+  margin-bottom: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.comparison-workbook-choice {
+  max-width: 420px;
+  margin-top: 24px;
+}
+.decision-comparison {
+  margin-top: 22px;
+}
 .decision-heading {
   display: flex;
   justify-content: space-between;
@@ -1193,6 +1285,19 @@ tbody th {
   }
   .decision-section {
     padding-top: 55px;
+  }
+  .comparison-section {
+    padding-top: 55px;
+  }
+  .comparison-heading {
+    display: block;
+  }
+  .comparison-heading .profile-badge {
+    display: inline-block;
+    margin-top: 12px;
+  }
+  .comparison-controls {
+    grid-template-columns: 1fr;
   }
   .decision-heading {
     display: block;
