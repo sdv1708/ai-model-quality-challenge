@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import DecisionView from './DecisionView'
 import { loadSampleWorkbook, normalizeWorkbook } from './workbooks'
 import type { NormalizedWorkbook, PerformanceRecord } from './workbooks'
 
@@ -304,15 +305,15 @@ export default function App() {
                 to <em>real clarity.</em>
               </h1>
               <p>
-                Upload a performance workbook and see the numbers that matter. Explore throughput,
-                latency, and workload shape in one clear view.
+                Upload a performance workbook, set your customer limits, and see whether the
+                projected configurations meet them.
               </p>
               <div className="hero-rule">
                 <span>01</span>
                 <span>Upload a workbook</span>
                 <Icon name="arrow" size={16} />
                 <span>02</span>
-                <span>Explore the projection</span>
+                <span>Check customer fit</span>
               </div>
             </div>
             <div className="hero-graphic" aria-hidden="true">
@@ -418,7 +419,10 @@ export default function App() {
             </section>
           )}
           {workbook ? (
-            <WorkbookPreview data={workbook} source={source} />
+            <>
+              <DecisionView workbook={workbook} />
+              <WorkbookPreview data={workbook} source={source} />
+            </>
           ) : (
             !loading && (
               <section className="empty-panel" aria-labelledby="empty-title">
