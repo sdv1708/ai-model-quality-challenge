@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import ComparisonView from './ComparisonView'
 import DecisionView from './DecisionView'
-import { loadSampleWorkbook, normalizeWorkbook } from './workbooks'
+import { compareWorkbooks } from './comparisons'
+import type { ComparisonResponse } from './comparisons'
+import { loadSampleWorkbook } from './workbooks'
 import type { NormalizedWorkbook, PerformanceRecord } from './workbooks'
 
 const whole = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 })
@@ -248,25 +251,29 @@ function WorkbookPreview({ data, source }: { data: NormalizedWorkbook; source: s
 }
 
 export default function App() {
-  const [workbook, setWorkbook] = useState<NormalizedWorkbook | null>(null)
+  const [comparison, setComparison] = useState<ComparisonResponse | null>(null)
+  const [selectedWorkbookIndex, setSelectedWorkbookIndex] = useState(0)
   const [source, setSource] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  async function loadWorkbook(getFile: () => Promise<File>) {
+  const workbook = comparison?.workbooks[selectedWorkbookIndex] ?? null
+
+  async function loadWorkbooks(getFiles: () => Promise<File[]>) {
     setError(null)
-    setWorkbook(null)
+    setComparison(null)
     setSource('')
     setLoading(true)
     try {
-      const file = await getFile()
-      const result = await normalizeWorkbook(file)
-      setWorkbook(result)
-      setSource(file.name)
+      const files = await getFiles()
+      const result = await compareWorkbooks(files)
+      setComparison(result)
+      setSelectedWorkbookIndex(0)
+      setSource(files.length === 1 ? files[0].name : `${files.length} uploaded files`)
     } catch (cause) {
       setError(
         cause instanceof Error
           ? cause.message
-          : 'Something went wrong while loading this workbook.',
+          : 'Something went wrong while loading these workbooks.',
       )
     } finally {
       setLoading(false)
@@ -305,12 +312,12 @@ export default function App() {
                 to <em>real clarity.</em>
               </h1>
               <p>
-                Upload a performance workbook, set your customer limits, and see whether the
-                projected configurations meet them.
+                Upload performance workbooks, compare matching configurations, and check customer
+                limits against the projections.
               </p>
               <div className="hero-rule">
                 <span>01</span>
-                <span>Upload a workbook</span>
+                <span>Upload workbooks</span>
                 <Icon name="arrow" size={16} />
                 <span>02</span>
                 <span>Check customer fit</span>
@@ -337,8 +344,8 @@ export default function App() {
               <div className="section-copy">
                 <h2 id="upload-title">Start with a sweep.</h2>
                 <p>
-                  Choose an Excel workbook from your device, or explore the sample. Both are
-                  analyzed through the same API.
+                  Choose one or more Excel workbooks, or explore the sample. Both paths use the same
+                  comparison API.
                 </p>
                 <div className="format-hint">
                   <Icon name="file" size={17} />
@@ -350,25 +357,26 @@ export default function App() {
                   <span className="upload-icon">
                     <Icon name="upload" size={26} />
                   </span>
-                  <span className="step-label">SINGLE WORKBOOK · LIVE ANALYSIS</span>
+                  <span className="step-label">ONE OR MANY WORKBOOKS · LIVE ANALYSIS</span>
                 </div>
                 <h3>Bring your data in</h3>
-                <p>Your workbook is validated and normalized as soon as you choose it.</p>
+                <p>Your workbooks are validated, normalized, and aligned when you choose them.</p>
                 <label
                   className={`file-picker ${loading ? 'is-loading' : ''}`}
                   htmlFor="workbook-file"
                 >
                   <Icon name="upload" size={18} />
-                  {loading ? 'Analyzing workbook…' : 'Choose an Excel workbook'}
+                  {loading ? 'Analyzing workbooks…' : 'Choose Excel workbooks'}
                   <input
                     id="workbook-file"
                     type="file"
+                    multiple
                     accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     disabled={loading}
                     onChange={(event) => {
-                      const file = event.currentTarget.files?.[0]
+                      const files = Array.from(event.currentTarget.files ?? [])
                       event.currentTarget.value = ''
-                      if (file) void loadWorkbook(async () => file)
+                      if (files.length) void loadWorkbooks(async () => files)
                     }}
                   />
                 </label>
@@ -379,7 +387,7 @@ export default function App() {
                   className="sample-button"
                   type="button"
                   disabled={loading}
-                  onClick={() => void loadWorkbook(loadSampleWorkbook)}
+                  onClick={() => void loadWorkbooks(async () => [await loadSampleWorkbook()])}
                 >
                   Load sample workbook <Icon name="arrow" size={17} />
                 </button>
@@ -390,9 +398,9 @@ export default function App() {
 
           <div role="status" aria-live="polite" className="sr-only">
             {loading
-              ? 'Analyzing workbook'
+              ? 'Analyzing workbooks'
               : workbook
-                ? `${workbook.model_name} workbook ready`
+                ? `${comparison?.workbooks.length} workbooks ready`
                 : ''}
           </div>
           {error && (
@@ -401,7 +409,7 @@ export default function App() {
                 <Icon name="warning" size={19} />
               </span>
               <div>
-                <strong>We couldn’t load that workbook</strong>
+                <strong>We couldn’t load those workbooks</strong>
                 <p>{error}</p>
               </div>
               <button type="button" onClick={() => setError(null)} aria-label="Dismiss error">
@@ -410,17 +418,28 @@ export default function App() {
             </div>
           )}
           {loading && (
-            <section className="loading-panel" aria-label="Loading workbook">
+            <section className="loading-panel" aria-label="Loading workbooks">
               <span className="loading-spinner" aria-hidden="true" />
               <div>
-                <h2>Analyzing your workbook</h2>
-                <p>Validating columns and normalizing performance records…</p>
+                <h2>Analyzing your workbooks</h2>
+                <p>Validating, normalizing, and aligning projected configurations…</p>
               </div>
             </section>
           )}
           {workbook ? (
             <>
-              <DecisionView workbook={workbook} />
+              {comparison && (
+                <ComparisonView
+                  data={comparison}
+                  selectedWorkbookIndex={selectedWorkbookIndex}
+                  onSelectWorkbook={setSelectedWorkbookIndex}
+                />
+              )}
+              <DecisionView
+                key={`${workbook.model_name}-${workbook.profile_id}`}
+                workbook={workbook}
+                allWorkbooks={comparison?.workbooks}
+              />
               <WorkbookPreview data={workbook} source={source} />
             </>
           ) : (
@@ -431,9 +450,7 @@ export default function App() {
                 </span>
                 <div className="eyebrow">Your workspace is ready</div>
                 <h2 id="empty-title">No workbook loaded</h2>
-                <p>
-                  Upload a performance sweep or load the sample to see its normalized summary here.
-                </p>
+                <p>Upload performance sweeps or load the sample to compare projections here.</p>
               </section>
             )
           )}

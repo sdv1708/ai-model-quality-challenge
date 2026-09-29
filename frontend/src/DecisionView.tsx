@@ -207,10 +207,18 @@ function numeric(form: FormData, name: string): number | undefined {
   return value === '' ? undefined : Number(value)
 }
 
-export default function DecisionView({ workbook }: { workbook: NormalizedWorkbook }) {
-  const [result, setResult] = useState<WorkloadDecision | null>(null)
+export default function DecisionView({
+  workbook,
+  allWorkbooks = [workbook],
+}: {
+  workbook: NormalizedWorkbook
+  allWorkbooks?: NormalizedWorkbook[]
+}) {
+  const [results, setResults] = useState<WorkloadDecision[] | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const peers = allWorkbooks.filter((candidate) => candidate.profile_id === workbook.profile_id)
+  const selectedResult = results?.find((result) => result.model_name === workbook.model_name)
   const scenarios = [
     ...new Map(
       workbook.records.map((record) => [
@@ -246,15 +254,22 @@ export default function DecisionView({ workbook }: { workbook: NormalizedWorkboo
       setError('Enter at least one target to make a customer decision.')
       return
     }
+    if (peers.length > 1 && !scenario) {
+      setError('Choose a projected workload to compare models against the same scenario.')
+      return
+    }
     setLoading(true)
     setError(null)
-    setResult(null)
+    setResults(null)
     try {
-      setResult(
-        await evaluateDecision(workbook, targets, {
-          context_window_tokens: numeric(data, 'supported-context'),
-          hardware_cost_usd_per_box_hour: numeric(data, 'box-price'),
-        }),
+      const assumptions = {
+        context_window_tokens: numeric(data, 'supported-context'),
+        hardware_cost_usd_per_box_hour: numeric(data, 'box-price'),
+      }
+      setResults(
+        await Promise.all(
+          peers.map((candidate) => evaluateDecision(candidate, targets, assumptions)),
+        ),
       )
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'The decision could not be evaluated.')
@@ -265,13 +280,13 @@ export default function DecisionView({ workbook }: { workbook: NormalizedWorkboo
 
   return (
     <section className="decision-section" aria-labelledby="workload-title">
-      <div className="section-index">02 / DECISION</div>
+      <div className="section-index">03 / DECISION</div>
       <div className="decision-heading">
         <div>
           <h2 id="workload-title">Will it work for your customers?</h2>
           <p>
-            Set the limits that matter. We’ll check the workbook’s projected configurations against
-            them.
+            Set the limits that matter. We’ll check each model in this profile against the same
+            workload and assumptions.
           </p>
         </div>
         <span className="decision-hint">Blank fields stay unknown or unchecked</span>
@@ -279,7 +294,7 @@ export default function DecisionView({ workbook }: { workbook: NormalizedWorkboo
       <form
         className="decision-form panel"
         onChange={() => {
-          setResult(null)
+          setResults(null)
           setError(null)
         }}
         onSubmit={(event) => {
@@ -291,10 +306,16 @@ export default function DecisionView({ workbook }: { workbook: NormalizedWorkboo
           <legend className="sr-only">Customer workload, limits, and assumptions</legend>
           <div className="form-group">
             <h3>1. Choose the workload</h3>
-            <p>Pick a workbook scenario, or look for a fit among any projected configuration.</p>
+            <p>
+              {peers.length > 1
+                ? 'Pick one projected scenario so every model is checked against the same workload.'
+                : 'Pick a workbook scenario, or look for a fit among any projected configuration.'}
+            </p>
             <label htmlFor="scenario">Projected workload</label>
             <select id="scenario" name="scenario" defaultValue="">
-              <option value="">Any projected workload</option>
+              <option value="">
+                {peers.length > 1 ? 'Choose a workload' : 'Any projected workload'}
+              </option>
               {scenarios.map((scenario, index) => (
                 <option
                   value={index}
@@ -384,9 +405,46 @@ export default function DecisionView({ workbook }: { workbook: NormalizedWorkboo
         </p>
       )}
       <div role="status" aria-live="polite" className="sr-only">
-        {result ? statusPresentation[result.status].announcement : ''}
+        {results ? `${results.length} customer decisions ready` : ''}
       </div>
-      {result && <DecisionResult result={result} />}
+      {results && results.length > 1 && (
+        <div className="panel decision-comparison">
+          <h3>Customer fit across models</h3>
+          <p className="panel-description">
+            The same scenario, limits, and supplied assumptions were checked for every model in
+            profile {workbook.profile_id}. A missing projected row remains “needs data.”
+          </p>
+          <div className="table-scroll">
+            <table aria-label="Customer decision comparison">
+              <thead>
+                <tr>
+                  <th scope="col">Model</th>
+                  <th scope="col">Decision</th>
+                  <th scope="col">Configuration</th>
+                  <th scope="col">Unmet checks</th>
+                  <th scope="col">Unknown checks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.map((result) => (
+                  <tr key={`${result.model_name}-${result.profile_id}`}>
+                    <th scope="row">{result.model_name}</th>
+                    <td>{statusPresentation[result.status].badge}</td>
+                    <td>
+                      {result.selected_record
+                        ? `Batch ${result.selected_record.batch_size}`
+                        : 'No matching row'}
+                    </td>
+                    <td>{result.unmet_constraints.join(', ') || 'None'}</td>
+                    <td>{result.unknown_constraints.join(', ') || 'None'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+      {selectedResult && <DecisionResult result={selectedResult} />}
     </section>
   )
 }
