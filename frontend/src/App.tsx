@@ -312,8 +312,8 @@ export default function App() {
                 to <em>real clarity.</em>
               </h1>
               <p>
-                Upload performance workbooks, compare matching configurations, and check
-                customer limits against the projections.
+                Upload performance workbooks, compare matching configurations, and check customer
+                limits against the projections.
               </p>
               <div className="hero-rule">
                 <span>01</span>
@@ -344,8 +344,8 @@ export default function App() {
               <div className="section-copy">
                 <h2 id="upload-title">Start with a sweep.</h2>
                 <p>
-                  Choose one or more Excel workbooks, or explore the sample. Both paths use the
-                  same comparison API.
+                  Choose one or more Excel workbooks, or explore the sample. Both paths use the same
+                  comparison API.
                 </p>
                 <div className="format-hint">
                   <Icon name="file" size={17} />

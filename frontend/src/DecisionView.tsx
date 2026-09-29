@@ -267,7 +267,9 @@ export default function DecisionView({
         hardware_cost_usd_per_box_hour: numeric(data, 'box-price'),
       }
       setResults(
-        await Promise.all(peers.map((candidate) => evaluateDecision(candidate, targets, assumptions))),
+        await Promise.all(
+          peers.map((candidate) => evaluateDecision(candidate, targets, assumptions)),
+        ),
       )
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'The decision could not be evaluated.')
@@ -311,7 +313,9 @@ export default function DecisionView({
             </p>
             <label htmlFor="scenario">Projected workload</label>
             <select id="scenario" name="scenario" defaultValue="">
-              <option value="">{peers.length > 1 ? 'Choose a workload' : 'Any projected workload'}</option>
+              <option value="">
+                {peers.length > 1 ? 'Choose a workload' : 'Any projected workload'}
+              </option>
               {scenarios.map((scenario, index) => (
                 <option
                   value={index}
