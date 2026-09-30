@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ComparisonView from './ComparisonView'
 import DecisionView from './DecisionView'
+import { EngineeringAnalysis } from './EngineeringView'
 import { compareWorkbooks } from './comparisons'
 import type { ComparisonResponse } from './comparisons'
 import { loadSampleWorkbook } from './workbooks'
@@ -312,8 +313,8 @@ export default function App() {
                 to <em>real clarity.</em>
               </h1>
               <p>
-                Upload performance workbooks, compare matching configurations, and check customer
-                limits against the projections.
+                Upload performance workbooks, compare matching configurations, check customer
+                limits, and inspect engineering evidence.
               </p>
               <div className="hero-rule">
                 <span>01</span>
@@ -428,6 +429,11 @@ export default function App() {
           )}
           {workbook ? (
             <>
+              <nav className="audience-links" aria-label="Analysis views">
+                <span>Explore the results</span>
+                <a href="#workload-title">Customer decision</a>
+                <a href="#engineering-title">Engineering inspection</a>
+              </nav>
               {comparison && (
                 <ComparisonView
                   data={comparison}
@@ -440,6 +446,7 @@ export default function App() {
                 workbook={workbook}
                 allWorkbooks={comparison?.workbooks}
               />
+              {comparison && <EngineeringAnalysis workbooks={comparison.workbooks} />}
               <WorkbookPreview data={workbook} source={source} />
             </>
           ) : (
