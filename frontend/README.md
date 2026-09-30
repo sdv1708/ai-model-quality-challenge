@@ -4,6 +4,8 @@ This React and TypeScript frontend accepts one or more local `.xlsx` workbooks o
 
 The comparison view aligns rows with the same profile, input length, output length, cache share, and batch size. Customer-facing metrics include total capacity, generation speed per user, and time to first token; engineering metrics include per-box and cache-sensitive throughput. A missing row is shown as a coverage gap, not a zero. For multiple models in one profile, the customer decision form requires a specific scenario and applies the same targets and assumptions to each model. It shows the resulting go, no-go, or needs-data verdicts side by side, with detailed evidence for the selected sweep. Empty target fields are not checked; an absent supported context window or box-hour price stays unknown when the relevant limit needs it. The hardware cost estimate assumes sustained projected capacity and is not a customer price.
 
+The engineering view sends every normalized workbook to `POST /api/v1/engineering/analyze`. Select a sweep and configuration to inspect sourced aggregate, per-box, cached, uncached, latency, and speed metrics. Controlled batch and cache trends come from the API; when a matching pair is absent, the view says so. Review flags link to the normalized rows and rule explanations that produced them. The row number is an index in normalized records, not an Excel sheet row. The view keeps the API's analysis limitations visible in an expandable section. A failed engineering request leaves the customer and comparison flows available.
+
 ## Prerequisites
 
 - Node.js 20 or newer
@@ -38,7 +40,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-The browser tests start both servers and cover single and multiple uploads, an unseen model name, validation recovery, customer decisions, missing cost assumptions, and a narrow viewport. Python API tests remain in `backend/`.
+The browser tests start both servers and cover single and multiple uploads, an unseen model name, validation recovery, customer decisions, engineering trends and flag evidence, missing cost assumptions, and a narrow viewport. Python API tests remain in `backend/`.
 
 ## Deployment configuration
 
