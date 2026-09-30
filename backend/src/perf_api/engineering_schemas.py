@@ -22,6 +22,9 @@ class SourceReference(BaseModel):
 
     model_name: str
     profile_id: str
+    workbook_index: int = Field(
+        ge=0, description="Zero-based index after deterministic workbook sorting"
+    )
     record_index: int = Field(ge=0, description="Zero-based index in normalized records")
     filename: str | None = None
     worksheet: str | None = None
