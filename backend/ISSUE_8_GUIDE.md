@@ -2,8 +2,8 @@
 
 The [issue](https://github.com/sdv1708/ai-model-quality-challenge/issues/8) asks for an
 engineering analysis response over performance projections. The learner owns the
-analysis and its tests. This branch supplies the API shape, a pure analysis seam, an
-explicit `501` route, and implementation TODOs. It does **not** compute diagnostics.
+analysis and its tests. This branch supplies the API shape, pure analysis
+function, HTTP route, and behavior tests.
 
 ## What the response must answer
 
@@ -68,55 +68,51 @@ generation speed falls from 1,354.4772 to 1,220.4817 t/s/user. Both facts
 belong in the engineering view; aggregate improvement does not imply every
 user-facing metric improves.
 
-The source identity available on `main` is model, profile, and a zero-based index
-inside the normalized `records` list. This is **not** an Excel row number. The
+The source identity is model, profile, a zero-based index in the deterministically
+sorted workbook list, and a zero-based index inside each normalized `records`
+list. The record index is **not** an Excel row number. The
 parser currently drops filename and worksheet row provenance; the optional
 `filename`, `worksheet`, and `sheet_row` fields must stay `None` unless upstream
 normalization supplies those facts. Do not reconstruct a sheet row by assuming
 all future workbooks have the present layout. Every reported numeric observation
 needs its unit and source; ratio units are dimensionless (`ratio`).
 
-Anomaly rules should have a stable code, explicit threshold or comparison, and
-an explanation containing the observed values and relevant source rows. Possible
-rules to evaluate include nonpositive rates, a large mismatch between total
-throughput and its cached-plus-uncached components (if that relationship holds
-across the supplied sheets), or a sharp throughput drop between comparable
-batch sizes. Select
-thresholds and tolerances deliberately, document their limits, and avoid treating
-an unusual but valid projection as a parse error. Avoid division by zero and
-do not claim a trend when only one point exists.
+The anomaly rules are deterministic review signals:
 
-## Fill-in order
+- Aggregate or per-box throughput, TTFT, or generation speed at or below zero
+  is flagged. Zero TTFT occurs in one supplied row, so this is a review signal.
+- Cached plus uncached throughput is compared with total using both a 0.1%
+  relative tolerance and a 0.01 t/s absolute tolerance. A flag requires the
+  difference to exceed both. All 275 supplied rows are within the relative
+  tolerance; the largest relative difference is about 0.0192%. The apparent
+  decomposition is inferred from the supplied projections, not a guaranteed
+  workbook invariant.
+- A batch step is flagged when aggregate throughput drops by **more than 5%**
+  from a positive baseline. This is a review heuristic. A zero or negative
+  baseline has no meaningful percent change; raw values remain visible.
 
-1. **TODO 8.1 — define comparison groups.** Read `schemas.py`, the merged
-   issue #6 `comparison_schemas.py` and `comparison.py`, and the sample workbook.
-   Decide which dimensions must match for each trend. Write that decision in
-   this guide. The request's `workbooks` list can come from issue #6's
-   `ComparisonResponse.workbooks`.
-2. **TODO 8.2 — preserve and expose source facts.** In `engineering.py`, emit
-   one `ConfigurationDiagnostic` per usable input row, retaining its
-   `PerformanceRecord`. Add clearly named `EngineeringMetric` values with units
-   and an explanation. If filename/sheet provenance is needed, extend the
-   normalization path instead of guessing it.
-3. **TODO 8.3 — derive comparisons.** Add cache and aggregate/per-box
-   observations, then batch and scaling `TrendDiagnostic` values. Handle absent
-   partners and zero denominators with a limitation or omitted derived metric,
-   never a made-up zero. Keep formulas and units visible.
-4. **TODO 8.4 — define anomaly rules.** Give each rule a code, exact condition,
-   tolerance, and observed evidence. Flag rows for review without dropping or
-   changing them. Repeated calls over the same input must return the same flags.
-5. **TODO 8.5 — state limitations.** Explain projection status, missing partners,
-   ambiguous workbook semantics, and unavailable provenance in `limitations`.
-6. **TODO 8.6 — connect HTTP.** Replace the `501` in
-   `routes/engineering.py` with a call to `analyze_engineering`. Keep the
-   calculations in the pure module. Feed it the normalized workbooks returned
-   by issue #6's `/api/v1/comparisons/workbooks` path.
-7. **TODO 8.7 — test public behavior.** Fill in `tests/test_engineering.py` with
-   representative scaling, cache, per-box, and anomaly cases. Check exact
-   sources, units, explanations, deterministic order, absent comparison rows,
-   and unusual valid values. Include an HTTP test for the final response.
+No anomaly rule removes or changes a source row.
 
-## Run the scaffold
+## Implementation map
+
+1. `engineering_schemas.py` defines the sourced response. `SourceReference`
+   includes a stable workbook index so duplicate model/profile names do not
+   make source references collide.
+2. `engineering.py` groups rows within each workbook. Cache-setting trends
+   hold input length, output length, and batch size fixed. Batch trends hold
+   input length, output length, and cache fraction fixed. Equal values are not
+   described as changes. Five batch metrics are compared.
+3. `routes/engineering.py` accepts normalized workbooks returned by issue #6's
+   `/api/v1/comparisons/workbooks` route and calls the pure analysis function.
+   Pydantic rejects an empty `workbooks` list with HTTP `422`.
+4. `tests/test_engineering.py` covers units, source references, batch metrics,
+   cache fractions, zero baselines, anomaly thresholds, duplicate identities,
+   supplied workbooks, and the HTTP route.
+
+Filename and worksheet-row provenance still require an upstream normalization
+contract change. Until then those optional source fields remain `None`.
+
+## Run and verify
 
 From `backend`:
 
@@ -130,5 +126,5 @@ uv run uvicorn perf_api.main:app --reload
 ```
 
 `POST /api/v1/engineering/analyze` accepts `{"workbooks": [<normalized
-workbook>, ...]}`. Until TODO 8.6 is complete, a valid request returns `501`
-with a clear message. `/docs` shows the intended request and response models.
+workbook>, ...]}` and returns sourced configurations, trends, anomaly flags,
+and limitations. `/docs` shows the request and response models.
