@@ -299,7 +299,7 @@ h1 em {
   padding-top: 57px;
 }
 .section-index {
-  color: #648077;
+  color: #3f715e;
   margin-bottom: 27px;
 }
 .upload-layout {
@@ -319,7 +319,7 @@ h1 em {
 }
 .section-copy > p {
   max-width: 420px;
-  color: #637488;
+  color: #526577;
   font-size: 16px;
   line-height: 1.65;
 }
@@ -328,7 +328,7 @@ h1 em {
   align-items: center;
   gap: 11px;
   margin-top: 34px;
-  color: #6d7d89;
+  color: #526577;
   font-size: 12px;
 }
 .format-hint svg {
@@ -360,7 +360,7 @@ h1 em {
   border-radius: 14px;
 }
 .step-label {
-  color: #8b9ca6;
+  color: #526577;
   font-size: 9px;
 }
 .upload-card h3 {
@@ -369,7 +369,7 @@ h1 em {
   margin-bottom: 8px;
 }
 .upload-card p {
-  color: #697b8a;
+  color: #526577;
   font-size: 13px;
   line-height: 1.55;
   margin-bottom: 22px;
@@ -417,7 +417,7 @@ h1 em {
   align-items: center;
   gap: 14px;
   margin: 14px 0;
-  color: #a2adb5;
+  color: #526577;
   font-size: 12px;
 }
 .upload-divider:before,
@@ -455,7 +455,7 @@ button:focus-visible {
 }
 .upload-footnote {
   text-align: center;
-  color: #9ba9ad;
+  color: #526577;
   font-size: 11px;
   margin-top: 13px;
 }
@@ -513,7 +513,7 @@ button:focus-visible {
 }
 .loading-panel p,
 .empty-panel p {
-  color: #71828e;
+  color: #526577;
   font-size: 14px;
   line-height: 1.55;
   margin: 0;
@@ -543,7 +543,7 @@ button:focus-visible {
   margin: 0 auto 20px;
 }
 .empty-panel .eyebrow {
-  color: #659781;
+  color: #3f715e;
   margin-bottom: 9px;
 }
 .empty-panel p {
@@ -561,7 +561,7 @@ button:focus-visible {
   margin-bottom: 29px;
 }
 .eyebrow {
-  color: #2e8c72;
+  color: #3f715e;
 }
 .eyebrow-line {
   display: inline-block;
@@ -582,7 +582,7 @@ button:focus-visible {
   align-items: center;
   flex-wrap: wrap;
   gap: 13px;
-  color: #84929a;
+  color: #526577;
   font-size: 12px;
 }
 .profile-badge {
@@ -634,7 +634,7 @@ button:focus-visible {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #687d83;
+  color: #526577;
   font-weight: 700;
 }
 .metric-card-accent .metric-label {
@@ -654,14 +654,14 @@ button:focus-visible {
   font-weight: 600;
   letter-spacing: 0;
   margin-left: 7px;
-  color: #71818c;
+  color: #526577;
 }
 .metric-card-accent .metric-value span {
   color: #bdf868;
 }
 .metric-card p {
   margin: 8px 0 0;
-  color: #87969d;
+  color: #526577;
   font-size: 12px;
 }
 .metric-card-accent p {
@@ -692,7 +692,7 @@ button:focus-visible {
 }
 .panel-count {
   font-size: 11px;
-  color: #6c8284;
+  color: #526577;
   background: #eef3f2;
   padding: 6px 9px;
   border-radius: 5px;
@@ -700,7 +700,7 @@ button:focus-visible {
 }
 .panel-description {
   font-size: 12px;
-  color: #829198;
+  color: #526577;
   line-height: 1.5;
   margin: 10px 0 25px;
 }
@@ -708,6 +708,10 @@ button:focus-visible {
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
+}
+.table-scroll:focus-visible {
+  outline: 3px solid #237966;
+  outline-offset: 3px;
 }
 table {
   border-collapse: collapse;
@@ -723,7 +727,7 @@ td {
   white-space: nowrap;
 }
 thead th {
-  color: #829399;
+  color: #526577;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -787,7 +791,7 @@ tbody th {
   padding: 15px 0;
 }
 .context-panel dt {
-  color: #83929b;
+  color: #526577;
   text-transform: uppercase;
   font-size: 10px;
   letter-spacing: 0.1em;
@@ -814,7 +818,7 @@ tbody th {
   margin-top: 2px;
 }
 .projection-note p {
-  color: #63786f;
+  color: #3f715e;
   font-size: 11px;
   line-height: 1.55;
   margin: 0;
@@ -839,7 +843,7 @@ tbody th {
 }
 .comparison-heading p,
 .comparison-note {
-  color: #637488;
+  color: #526577;
   line-height: 1.5;
 }
 .comparison-heading p {
@@ -887,7 +891,7 @@ tbody th {
   color: #1d604f;
 }
 .comparison-status span {
-  color: #637488;
+  color: #526577;
   font-size: 12px;
 }
 .comparison-note {
@@ -927,7 +931,7 @@ tbody th {
   margin-bottom: 10px;
 }
 .decision-heading p {
-  color: #637488;
+  color: #526577;
   line-height: 1.5;
   margin-bottom: 0;
 }
@@ -956,7 +960,7 @@ tbody th {
   margin: 0 0 5px;
 }
 .form-group p {
-  color: #70818c;
+  color: #526577;
   font-size: 13px;
   margin-bottom: 18px;
 }
@@ -969,7 +973,7 @@ tbody th {
   font-weight: 700;
 }
 .form-group label span {
-  color: #73868f;
+  color: #526577;
   font-size: 11px;
   font-weight: 400;
 }
@@ -1015,7 +1019,7 @@ tbody th {
   background: #285b4b;
 }
 .decision-actions span {
-  color: #70818c;
+  color: #526577;
   font-size: 12px;
 }
 .decision-loading {
@@ -1137,7 +1141,7 @@ tbody th {
   line-height: 1.45;
 }
 .evidence-explanation {
-  color: #6a7e86;
+  color: #526577;
 }
 .decision-assumptions ul {
   padding-left: 20px;
@@ -1150,7 +1154,7 @@ tbody th {
 }
 .decision-assumptions > p,
 .decision-empty {
-  color: #657b82;
+  color: #526577;
   font-size: 12px;
   line-height: 1.55;
 }
@@ -1192,7 +1196,7 @@ tbody th {
   margin-top: 45px;
 }
 .audience-links span {
-  color: #637488;
+  color: #526577;
   font-size: 12px;
   font-weight: 700;
   margin-right: 6px;
@@ -1231,7 +1235,7 @@ tbody th {
 }
 .engineering-heading p {
   max-width: 700px;
-  color: #637488;
+  color: #526577;
   line-height: 1.5;
   margin-bottom: 0;
 }
@@ -1291,7 +1295,7 @@ tbody th {
   margin: 5px 0;
 }
 .engineering-detail-heading p {
-  color: #657b82;
+  color: #526577;
   font-size: 13px;
   margin-bottom: 0;
 }
@@ -1308,7 +1312,7 @@ tbody th {
   padding: 14px;
 }
 .engineering-metrics dt {
-  color: #637488;
+  color: #526577;
   font-size: 11px;
   font-weight: 700;
 }
@@ -1320,7 +1324,9 @@ tbody th {
   overflow-wrap: anywhere;
 }
 .engineering-metrics p {
-  color: #6b7e85;
+  font-weight: 400;
+  margin-top: 8px;
+  color: #526577;
   font-size: 11px;
   line-height: 1.45;
   margin: 0;
@@ -1347,7 +1353,7 @@ tbody th {
   margin: 6px 0;
 }
 .engineering-trend-list span {
-  color: #71828e;
+  color: #526577;
 }
 .engineering-flags ul,
 .engineering-limitations ul {
@@ -1368,7 +1374,7 @@ tbody th {
   font-weight: 700;
 }
 .engineering-empty {
-  color: #637488;
+  color: #526577;
   font-size: 13px;
   line-height: 1.5;
   margin: 20px 0 0;
@@ -1396,7 +1402,7 @@ tbody th {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  color: #87969d;
+  color: #526577;
   font-size: 11px;
 }
 .site-footer span:first-child {

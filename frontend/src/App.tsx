@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { usePendingFocus } from './usePendingFocus'
 import ComparisonView from './ComparisonView'
 import DecisionView from './DecisionView'
+import TableScroll from './TableScroll'
 import { EngineeringAnalysis } from './EngineeringView'
 import { compareWorkbooks } from './comparisons'
 import type { ComparisonResponse } from './comparisons'
@@ -94,7 +96,7 @@ function MetricCard({
 function RecordTable({ records }: { records: PerformanceRecord[] }) {
   const maxThroughput = Math.max(...records.map((record) => record.throughput), 1)
   return (
-    <div className="table-scroll">
+    <TableScroll label="Normalized configurations">
       <table aria-label="Normalized configurations">
         <thead>
           <tr>
@@ -142,7 +144,7 @@ function RecordTable({ records }: { records: PerformanceRecord[] }) {
           ))}
         </tbody>
       </table>
-    </div>
+    </TableScroll>
   )
 }
 
@@ -256,10 +258,12 @@ export default function App() {
   const [selectedWorkbookIndex, setSelectedWorkbookIndex] = useState(0)
   const [source, setSource] = useState('')
   const [loading, setLoading] = useState(false)
+  const rememberFocus = usePendingFocus(loading)
   const [error, setError] = useState<string | null>(null)
   const workbook = comparison?.workbooks[selectedWorkbookIndex] ?? null
 
   async function loadWorkbooks(getFiles: () => Promise<File[]>) {
+    rememberFocus()
     setError(null)
     setComparison(null)
     setSource('')

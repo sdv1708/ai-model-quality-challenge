@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { usePendingFocus } from './usePendingFocus'
+import TableScroll from './TableScroll'
 import { evaluateDecision } from './decisions'
 import type { ConstraintEvidence, WorkloadDecision, WorkloadTargets } from './decisions'
 import type { NormalizedWorkbook } from './workbooks'
@@ -216,6 +218,7 @@ export default function DecisionView({
 }) {
   const [results, setResults] = useState<WorkloadDecision[] | null>(null)
   const [loading, setLoading] = useState(false)
+  const rememberFocus = usePendingFocus(loading)
   const [error, setError] = useState<string | null>(null)
   const peers = allWorkbooks.filter((candidate) => candidate.profile_id === workbook.profile_id)
   const selectedResult = results?.find((result) => result.model_name === workbook.model_name)
@@ -258,6 +261,7 @@ export default function DecisionView({
       setError('Choose a projected workload to compare models against the same scenario.')
       return
     }
+    rememberFocus()
     setLoading(true)
     setError(null)
     setResults(null)
@@ -414,7 +418,7 @@ export default function DecisionView({
             The same scenario, limits, and supplied assumptions were checked for every model in
             profile {workbook.profile_id}. A missing projected row remains “needs data.”
           </p>
-          <div className="table-scroll">
+          <TableScroll label="Customer decision comparison">
             <table aria-label="Customer decision comparison">
               <thead>
                 <tr>
@@ -441,7 +445,7 @@ export default function DecisionView({
                 ))}
               </tbody>
             </table>
-          </div>
+          </TableScroll>
         </div>
       )}
       {selectedResult && <DecisionResult result={selectedResult} />}
