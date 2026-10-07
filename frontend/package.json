@@ -8,13 +8,17 @@
     "build": "tsc -b && vite build",
     "format:check": "prettier --check . --ignore-path ../.gitignore",
     "preview": "vite preview --host 127.0.0.1",
-    "test:e2e": "playwright test"
+    "prepreview:e2e": "npm run build",
+    "preview:e2e": "vite preview --host 127.0.0.1",
+    "test:e2e": "playwright test",
+    "test:e2e:built": "playwright test --config playwright.resilience.config.ts"
   },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.55.0",
     "@types/node": "^26.6.3",
     "@types/react": "^19.1.0",

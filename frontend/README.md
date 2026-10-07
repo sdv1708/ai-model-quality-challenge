@@ -42,6 +42,29 @@ npm run test:e2e
 
 The browser tests start both servers and cover single and multiple uploads, an unseen model name, validation recovery, customer decisions, engineering trends and flag evidence, missing cost assumptions, and a narrow viewport. Python API tests remain in `backend/`.
 
+## Built-frontend verification (Issue #10)
+
+```powershell
+npm run build
+npm run test:e2e:built
+```
+
+Playwright generates fresh synthetic A/L workbooks and malformed variants using
+the backend virtual environment's openpyxl installation. This browser-only
+factory is independent of the learner's backend fixtures. Global setup also
+exports those backend fixtures and a dedicated browser journey uploads their
+exact bytes. Tests verify exact
+metrics, different customer verdicts, engineering source rows, error recovery,
+mixed-batch warnings, keyboard navigation, contained table scrolling at
+390px/640px, and axe scans across six rendered states. Generated files stay in
+`tests/fixtures/browser-generated/`, outside public assets. The built suite uses
+preview port 4174 and API port 8018 with a same-origin proxy; leave
+`VITE_API_BASE_URL` unset for this topology. Public hosting and separate-origin
+CORS are verified in issue #11. The built-suite server runs `prepreview:e2e` to
+rebuild dist with local API routing before preview starts, so the separate build
+command above is optional for this suite. An inherited `VITE_API_BASE_URL` is
+overridden by the managed test configuration.
+
 ## Deployment configuration
 
 The frontend builds to `frontend/dist/` using `npm run build`. By default it calls `/api/v1/comparisons/workbooks` on the same origin. For a separately deployed API, set `VITE_API_BASE_URL` to the API origin at build time and configure the API to permit the frontend origin through CORS. The current backend does not yet provide that production CORS configuration; local development uses Vite's proxy.

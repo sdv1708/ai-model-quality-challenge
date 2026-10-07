@@ -4,6 +4,10 @@ Welcome, and thanks for taking the time. This challenge has two independent task
 
 ## Local development
 
+Issue #10: the learner's [backend checklist](./backend/ISSUE_10_BACKEND_GUIDE.md)
+contains the numbered implementation TODOs. The assistant owns frontend work.
+[`ISSUE_10_GUIDE.md`](./ISSUE_10_GUIDE.md) explains resilience and test boundaries.
+
 Task 1 backend setup and verification commands live in
 [`backend/README.md`](./backend/README.md). The backend uses Python 3.12, FastAPI,
 Pydantic, openpyxl, pytest, Ruff, and mypy, with dependencies managed by `uv`.

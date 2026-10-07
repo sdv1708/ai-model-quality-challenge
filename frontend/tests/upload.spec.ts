@@ -9,7 +9,7 @@ test('uploads a workbook and shows its normalized performance summary', async ({
   await page.goto('/')
   await page.getByLabel('Choose Excel workbooks').setInputFiles(sampleWorkbook)
 
-  await expect(page.getByRole('heading', { name: 'Model A' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Model A', exact: true })).toBeVisible()
   await expect(page.locator('.preview .profile-badge')).toHaveText('Profile 1')
   await expect(page.getByText('4 configurations')).toBeVisible()
   await expect(page.getByRole('table', { name: 'Normalized configurations' })).toBeVisible()
@@ -24,7 +24,7 @@ test('reports a specific workbook validation error and lets the user recover', a
   await expect(page.getByRole('alert')).toContainText('Batch Size')
   await expect(page.getByRole('heading', { name: 'No workbook loaded' })).toBeVisible()
   await page.getByRole('button', { name: 'Load sample workbook' }).click()
-  await expect(page.getByRole('heading', { name: 'Model A' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Model A', exact: true })).toBeVisible()
 })
 
 test('compares multiple uploads including an unseen model name', async ({ page }) => {
@@ -49,7 +49,7 @@ test('compares multiple uploads including an unseen model name', async ({ page }
   await expect(table.getByRole('rowheader', { name: 'Model A' })).toBeVisible()
   await expect(table.getByRole('rowheader', { name: 'Model L' })).toBeVisible()
   await page.getByLabel('Inspect one sweep and test customer targets').selectOption('1')
-  await expect(page.getByRole('heading', { name: 'Model L' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Model L', exact: true })).toBeVisible()
   await page.getByLabel('Projected workload').selectOption({ index: 1 })
   await page.getByLabel('Minimum total capacity').fill('1')
   await page.getByRole('button', { name: 'Check customer fit' }).click()
@@ -64,6 +64,6 @@ test('sample flow works from the keyboard on a narrow screen', async ({ page }) 
   await page.getByRole('button', { name: 'Load sample workbook' }).focus()
   await page.keyboard.press('Enter')
 
-  await expect(page.getByRole('heading', { name: 'Model A' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Model A', exact: true })).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
 })

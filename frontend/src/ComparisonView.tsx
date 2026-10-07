@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import TableScroll from './TableScroll'
 import type { AlignedConfiguration, ComparisonResponse } from './comparisons'
 
 const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 })
@@ -46,7 +47,7 @@ export default function ComparisonView({
       </div>
 
       {data.diagnostics.length > 0 && (
-        <div className="panel comparison-diagnostics" aria-label="Upload diagnostics">
+        <div className="panel comparison-diagnostics" role="region" aria-label="Upload diagnostics">
           <h3>Upload notes</h3>
           <ul>
             {data.diagnostics.map((diagnostic, index) => (
@@ -120,7 +121,7 @@ export default function ComparisonView({
               These are projections for one matched configuration, not a go/no-go decision or
               measured production performance.
             </p>
-            <div className="table-scroll">
+            <TableScroll label="Customer model comparison">
               <table aria-label="Customer model comparison">
                 <thead>
                   <tr>
@@ -146,13 +147,13 @@ export default function ComparisonView({
                   })}
                 </tbody>
               </table>
-            </div>
+            </TableScroll>
 
             <h3>Engineering view</h3>
             <p className="panel-description">
               Per-box capacity and cache-sensitive throughput help check deployment assumptions.
             </p>
-            <div className="table-scroll">
+            <TableScroll label="Engineering model comparison">
               <table aria-label="Engineering model comparison">
                 <thead>
                   <tr>
@@ -190,7 +191,7 @@ export default function ComparisonView({
                   })}
                 </tbody>
               </table>
-            </div>
+            </TableScroll>
           </>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ComparisonView from './ComparisonView'
 import DecisionView from './DecisionView'
+import TableScroll from './TableScroll'
 import { EngineeringAnalysis } from './EngineeringView'
 import { compareWorkbooks } from './comparisons'
 import type { ComparisonResponse } from './comparisons'
@@ -94,7 +95,7 @@ function MetricCard({
 function RecordTable({ records }: { records: PerformanceRecord[] }) {
   const maxThroughput = Math.max(...records.map((record) => record.throughput), 1)
   return (
-    <div className="table-scroll">
+    <TableScroll label="Normalized configurations">
       <table aria-label="Normalized configurations">
         <thead>
           <tr>
@@ -142,7 +143,7 @@ function RecordTable({ records }: { records: PerformanceRecord[] }) {
           ))}
         </tbody>
       </table>
-    </div>
+    </TableScroll>
   )
 }
 

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import TableScroll from './TableScroll'
 import { evaluateDecision } from './decisions'
 import type { ConstraintEvidence, WorkloadDecision, WorkloadTargets } from './decisions'
 import type { NormalizedWorkbook } from './workbooks'
@@ -414,7 +415,7 @@ export default function DecisionView({
             The same scenario, limits, and supplied assumptions were checked for every model in
             profile {workbook.profile_id}. A missing projected row remains “needs data.”
           </p>
-          <div className="table-scroll">
+          <TableScroll label="Customer decision comparison">
             <table aria-label="Customer decision comparison">
               <thead>
                 <tr>
@@ -441,7 +442,7 @@ export default function DecisionView({
                 ))}
               </tbody>
             </table>
-          </div>
+          </TableScroll>
         </div>
       )}
       {selectedResult && <DecisionResult result={selectedResult} />}

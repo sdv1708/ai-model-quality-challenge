@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import TableScroll from './TableScroll'
 import { analyzeEngineering } from './engineering'
 import type {
   AnomalyFlag,
@@ -128,7 +129,7 @@ export default function EngineeringView({ data }: EngineeringViewProps) {
           Select a row to inspect all sourced metrics. Cached and uncached throughput are reported
           components; their ratio does not establish a cache speedup.
         </p>
-        <div className="table-scroll">
+        <TableScroll label="Engineering configurations">
           <table aria-label="Engineering configurations">
             <thead>
               <tr>
@@ -191,7 +192,7 @@ export default function EngineeringView({ data }: EngineeringViewProps) {
               })}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
 
         {selected && (
           <div id="engineering-detail" className="engineering-detail" aria-live="polite">
@@ -212,8 +213,10 @@ export default function EngineeringView({ data }: EngineeringViewProps) {
               {selected.metrics.map((metric) => (
                 <div key={metric.name}>
                   <dt>{metricLabel(metric.name)}</dt>
-                  <dd>{formatMetric(metric)}</dd>
-                  <p>{metric.explanation}</p>
+                  <dd>
+                    {formatMetric(metric)}
+                    <p>{metric.explanation}</p>
+                  </dd>
                 </div>
               ))}
             </dl>
