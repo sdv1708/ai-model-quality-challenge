@@ -196,6 +196,7 @@ test('keyboard tab order reaches upload controls with visible focus', async ({ p
   await page.keyboard.press('Tab')
   await page.keyboard.press('Enter')
   await expect(page.getByRole('heading', { name: 'Model A', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Load sample workbook' })).toBeFocused()
   await page.keyboard.press('Tab')
   await expect(page.getByRole('link', { name: 'Customer decision', exact: true })).toBeFocused()
   await page.keyboard.press('Tab')
@@ -204,4 +205,51 @@ test('keyboard tab order reaches upload controls with visible focus', async ({ p
   ).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(page.getByRole('heading', { name: 'Inspect the projection' })).toBeInViewport()
+})
+
+test('upload focus returns after success and failure', async ({ page }) => {
+  await page.goto('/')
+  const upload = page.getByLabel('Choose Excel workbooks')
+  await upload.focus()
+  await upload.setInputFiles(modelL)
+  await expect(page.getByRole('heading', { name: 'Model L', exact: true })).toBeVisible()
+  await expect(upload).toBeFocused()
+  await upload.setInputFiles(path.join(generatedFixtures, 'corrupt.xlsx'))
+  await expect(page.getByRole('alert')).toBeVisible()
+  await expect(upload).toBeFocused()
+})
+
+test('customer submit focus returns after success and failure', async ({ page }) => {
+  await uploadGeneratedModels(page)
+  await page.getByLabel('Projected workload').selectOption({ index: 1 })
+  await page.getByLabel('Minimum total capacity').fill('450')
+  const submit = page.getByRole('button', { name: 'Check customer fit' })
+  await submit.press('Enter')
+  await expect(page.getByRole('table', { name: 'Customer decision comparison' })).toBeVisible()
+  await expect(submit).toBeFocused()
+  await page.route('**/api/v1/decisions/evaluate', (route) => route.abort('connectionfailed'))
+  await submit.press('Enter')
+  await expect(page.getByRole('alert')).toBeVisible()
+  await expect(submit).toBeFocused()
+})
+
+test('request completion does not steal focus when the user navigates away', async ({ page }) => {
+  let release!: () => void
+  const pending = new Promise<void>((resolve) => {
+    release = resolve
+  })
+  await page.route('**/api/v1/comparisons/workbooks', async (route) => {
+    await pending
+    await route.continue()
+  })
+  await page.goto('/')
+  const sample = page.getByRole('button', { name: 'Load sample workbook' })
+  await sample.press('Enter')
+  await expect(sample).toBeDisabled()
+  await page.keyboard.press('Tab')
+  const home = page.getByRole('link', { name: 'Performance Studio home' })
+  await expect(home).toBeFocused()
+  release()
+  await expect(page.getByRole('heading', { name: 'Model A', exact: true })).toBeVisible()
+  await expect(home).toBeFocused()
 })

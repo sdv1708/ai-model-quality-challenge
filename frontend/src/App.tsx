@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { usePendingFocus } from './usePendingFocus'
 import ComparisonView from './ComparisonView'
 import DecisionView from './DecisionView'
 import TableScroll from './TableScroll'
@@ -257,10 +258,12 @@ export default function App() {
   const [selectedWorkbookIndex, setSelectedWorkbookIndex] = useState(0)
   const [source, setSource] = useState('')
   const [loading, setLoading] = useState(false)
+  const rememberFocus = usePendingFocus(loading)
   const [error, setError] = useState<string | null>(null)
   const workbook = comparison?.workbooks[selectedWorkbookIndex] ?? null
 
   async function loadWorkbooks(getFiles: () => Promise<File[]>) {
+    rememberFocus()
     setError(null)
     setComparison(null)
     setSource('')
