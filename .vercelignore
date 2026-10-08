@@ -1,0 +1,17 @@
+# Task 2 evaluation data is not part of the deployed Task 1 application.
+Evals/
+perf_data.zip
+
+# Local dependencies, credentials, and generated verification output.
+**/.venv/**
+**/node_modules/**
+**/.env*
+frontend/dist/
+frontend/playwright-report/
+frontend/test-results/
+frontend/tests/fixtures/generated/
+frontend/tests/fixtures/browser-generated/
+**/__pycache__/**
+**/.pytest_cache/**
+**/.mypy_cache/**
+**/.ruff_cache/**

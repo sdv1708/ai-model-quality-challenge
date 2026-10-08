@@ -48,15 +48,13 @@ export interface EngineeringAnalysisResponse {
   limitations: string[]
 }
 
-const apiBase = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
-
 export async function analyzeEngineering(
   workbooks: NormalizedWorkbook[],
   signal?: AbortSignal,
 ): Promise<EngineeringAnalysisResponse> {
   let response: Response
   try {
-    response = await fetch(`${apiBase}/api/v1/engineering/analyze`, {
+    response = await fetch('/api/v1/engineering/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ workbooks }),

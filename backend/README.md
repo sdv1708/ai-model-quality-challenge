@@ -112,6 +112,21 @@ usable comparisons and file-specific diagnostics. If no usable configuration
 remains, the endpoint returns `422` with diagnostics in `detail`. See
 `ISSUE_6_GUIDE.md` for the comparison policy and test cases.
 
+## Vercel service
+
+The root `vercel.json` selects `backend/` as the FastAPI service and explicitly
+uses `src.perf_api.main:app` as its entrypoint. Python 3.12 and dependencies are
+declared in `pyproject.toml` and pinned in `uv.lock`.
+
+Vercel preserves the incoming path: `/api/v1/...` reaches the existing API routes
+and `/health` reaches the health endpoint. Browser requests use the same domain,
+so this topology does not require CORS. The backend makes no outgoing service
+calls and needs no bindings. `/docs`, `/redoc`, and `/openapi.json` have no public
+backend rewrite; use the standalone local API for those routes.
+
+See [`../docs/vercel-deployment.md`](../docs/vercel-deployment.md) for running both
+services through `vercel dev --local` and verifying the deployed application.
+
 ## Verify changes
 
 ```powershell

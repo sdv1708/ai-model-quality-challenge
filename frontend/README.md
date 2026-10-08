@@ -58,13 +58,25 @@ metrics, different customer verdicts, engineering source rows, error recovery,
 mixed-batch warnings, keyboard navigation, contained table scrolling at
 390px/640px, and axe scans across six rendered states. Generated files stay in
 `tests/fixtures/browser-generated/`, outside public assets. The built suite uses
-preview port 4174 and API port 8018 with a same-origin proxy; leave
-`VITE_API_BASE_URL` unset for this topology. Public hosting and separate-origin
-CORS are verified in issue #11. The built-suite server runs `prepreview:e2e` to
-rebuild dist with local API routing before preview starts, so the separate build
-command above is optional for this suite. An inherited `VITE_API_BASE_URL` is
-overridden by the managed test configuration.
+preview port 4174 and API port 8018 with a same-origin proxy. The built-suite
+server runs `prepreview:e2e` to rebuild dist before preview starts, so the
+separate build command above is optional for this suite.
 
 ## Deployment configuration
 
-The frontend builds to `frontend/dist/` using `npm run build`. By default it calls `/api/v1/comparisons/workbooks` on the same origin. For a separately deployed API, set `VITE_API_BASE_URL` to the API origin at build time and configure the API to permit the frontend origin through CORS. The current backend does not yet provide that production CORS configuration; local development uses Vite's proxy.
+The frontend builds to `frontend/dist/` using `npm run build`. Its browser code
+calls `/api/v1/...` on the same origin. The root `vercel.json` deploys it alongside
+the FastAPI backend as two services in one Vercel project. Vercel routes API
+requests to the backend and assets, samples, and page requests to the frontend.
+Standalone Vite development and preview use `VITE_DEV_API_TARGET` for their local
+proxy; it defaults to `http://127.0.0.1:8000`.
+
+No frontend function calls the backend, so there is no service binding. Runtime
+binding URLs cannot be used in this static browser bundle. `VITE_API_BASE_URL`
+is no longer used; remove any previously configured value from Vercel settings.
+See [`../docs/vercel-deployment.md`](../docs/vercel-deployment.md) for the
+`vercel dev --local` workflow and production smoke checks.
+
+With `vercel dev --local --listen 3000` running from the repository root, run
+`npm run test:e2e:services` in this directory to exercise the existing browser
+suite through Vercel's service routing instead of Vite's standalone proxy.

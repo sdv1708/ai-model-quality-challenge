@@ -27,15 +27,13 @@ export interface NormalizedWorkbook {
   records: PerformanceRecord[]
 }
 
-const apiBase = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
-
 export async function normalizeWorkbook(file: File): Promise<NormalizedWorkbook> {
   const form = new FormData()
   form.append('workbook', file)
 
   let response: Response
   try {
-    response = await fetch(`${apiBase}/api/v1/workbooks/normalize`, {
+    response = await fetch('/api/v1/workbooks/normalize', {
       method: 'POST',
       body: form,
     })

@@ -1,6 +1,16 @@
 # AI Engineer — Model Quality & Performance Challenge
 
+**Live Task 1 app:** [Performance Studio](https://ai-model-quality-challenge-rho.vercel.app)
+
 Welcome, and thanks for taking the time. This challenge has two independent tasks.
+
+## Task 1 deployment
+
+Task 1 is configured as one Vercel project with two services in the root
+[`vercel.json`](./vercel.json): the Vite frontend and FastAPI backend. Both use
+one domain; `/api/*` and `/health` reach the backend and other paths reach the
+frontend. See [`docs/vercel-deployment.md`](./docs/vercel-deployment.md) for
+local services verification, deployment settings, and the live smoke procedure.
 
 ## Local development
 

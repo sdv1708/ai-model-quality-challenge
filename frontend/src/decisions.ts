@@ -49,8 +49,6 @@ export interface WorkloadDecision {
   assumptions: string[]
 }
 
-const apiBase = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
-
 export async function evaluateDecision(
   workbook: NormalizedWorkbook,
   targets: WorkloadTargets,
@@ -58,7 +56,7 @@ export async function evaluateDecision(
 ): Promise<WorkloadDecision> {
   let response: Response
   try {
-    response = await fetch(`${apiBase}/api/v1/decisions/evaluate`, {
+    response = await fetch('/api/v1/decisions/evaluate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ workbook, targets, assumptions }),

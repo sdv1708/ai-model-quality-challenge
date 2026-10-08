@@ -17,7 +17,7 @@ export default defineConfig({
     },
     {
       command: 'npm run preview:e2e -- --port 4174 --strictPort',
-      env: { VITE_DEV_API_TARGET: 'http://127.0.0.1:8018', VITE_API_BASE_URL: '' },
+      env: { VITE_DEV_API_TARGET: 'http://127.0.0.1:8018' },
       url: 'http://127.0.0.1:4174',
       reuseExistingServer: false,
       timeout: 60_000,

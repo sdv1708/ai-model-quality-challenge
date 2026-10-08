@@ -30,8 +30,6 @@ export interface ComparisonResponse {
   diagnostics: ComparisonDiagnostic[]
 }
 
-const apiBase = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
-
 function errorDetail(body: unknown): string | null {
   if (!body || typeof body !== 'object' || !('detail' in body)) return null
   const detail = body.detail
@@ -61,7 +59,7 @@ export async function compareWorkbooks(files: File[]): Promise<ComparisonRespons
 
   let response: Response
   try {
-    response = await fetch(`${apiBase}/api/v1/comparisons/workbooks`, {
+    response = await fetch('/api/v1/comparisons/workbooks', {
       method: 'POST',
       body: form,
     })
