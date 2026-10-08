@@ -436,7 +436,7 @@ export default function App() {
               <nav className="audience-links" aria-label="Analysis views">
                 <span>Explore the results</span>
                 <a href="#workload-title">Customer decision</a>
-                <a href="#engineering-title">Engineering inspection</a>
+                <a href="#engineering-inspection">Engineering inspection</a>
               </nav>
               {comparison && (
                 <ComparisonView
@@ -450,7 +450,11 @@ export default function App() {
                 workbook={workbook}
                 allWorkbooks={comparison?.workbooks}
               />
-              {comparison && <EngineeringAnalysis workbooks={comparison.workbooks} />}
+              {comparison && (
+                <div id="engineering-inspection">
+                  <EngineeringAnalysis workbooks={comparison.workbooks} />
+                </div>
+              )}
               <WorkbookPreview data={workbook} source={source} />
             </>
           ) : (

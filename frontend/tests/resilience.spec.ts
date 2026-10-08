@@ -207,6 +207,33 @@ test('keyboard tab order reaches upload controls with visible focus', async ({ p
   await expect(page.getByRole('heading', { name: 'Inspect the projection' })).toBeInViewport()
 })
 
+test('engineering shortcut works while diagnostics are loading', async ({ page }) => {
+  let releaseRequest!: () => void
+  const pending = new Promise<void>((resolve) => {
+    releaseRequest = resolve
+  })
+  await page.route('**/api/v1/engineering/analyze', async (route) => {
+    await pending
+    await route.continue()
+  })
+
+  try {
+    await page.goto('/')
+    await page.getByRole('button', { name: 'Load sample workbook' }).press('Enter')
+    await expect(page.getByRole('heading', { name: 'Model A', exact: true })).toBeVisible()
+    const loading = page.getByRole('status', { name: 'Engineering analysis' })
+    await expect(loading).toBeVisible()
+    const shortcut = page.getByRole('link', { name: 'Engineering inspection', exact: true })
+    await shortcut.focus()
+    await shortcut.press('Enter')
+    await expect(loading).toBeInViewport()
+    releaseRequest()
+    await expect(page.getByRole('heading', { name: 'Inspect the projection' })).toBeInViewport()
+  } finally {
+    releaseRequest()
+  }
+})
+
 test('upload focus returns after success and failure', async ({ page }) => {
   await page.goto('/')
   const upload = page.getByLabel('Choose Excel workbooks')
