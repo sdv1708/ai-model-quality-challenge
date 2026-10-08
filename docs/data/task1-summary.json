@@ -1,0 +1,789 @@
+{
+  "source": "perf_data.zip",
+  "source_sha256": "3ac805477fa4f0308bfd259707f340241a41937807b9caa8a232db9f5ae2a7e7",
+  "workbook_count": 77,
+  "record_count": 275,
+  "method": "Median A/model per-box throughput ratio over all matching configurations",
+  "size_assumption": "Illustrative dense-equivalent proxy, NOT identified parameter counts",
+  "models": [
+    {
+      "model": "Model A",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 37373.6727,
+      "profile1_batch10_generation_speed": 1354.4772,
+      "aggregate_to_per_box_ratio_range": [
+        6.999106084220089,
+        7.000347405109725
+      ],
+      "per_box_throughput_rank_range": [
+        4,
+        9
+      ],
+      "inverse_per_box_ratio_to_A_median": 1.0,
+      "inverse_per_box_ratio_to_A_range": [
+        1.0,
+        1.0
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 70.0,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        30.0,
+        100.0
+      ]
+    },
+    {
+      "model": "Model B",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 9325.444,
+      "profile1_batch10_generation_speed": 864.7004,
+      "aggregate_to_per_box_ratio_range": [
+        23.98927856564441,
+        24.011065036272328
+      ],
+      "per_box_throughput_rank_range": [
+        8,
+        9
+      ],
+      "inverse_per_box_ratio_to_A_median": 4.189397025177394,
+      "inverse_per_box_ratio_to_A_range": [
+        0.7412212591071472,
+        6.116316564886906
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 293.2577917624176,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        125.68191075532182,
+        418.9397025177394
+      ]
+    },
+    {
+      "model": "Model C",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 3209.9827,
+      "profile1_batch10_generation_speed": 451.4924,
+      "aggregate_to_per_box_ratio_range": [
+        26.9626565192714,
+        27.056075524299978
+      ],
+      "per_box_throughput_rank_range": [
+        11,
+        11
+      ],
+      "inverse_per_box_ratio_to_A_median": 11.352370664724788,
+      "inverse_per_box_ratio_to_A_range": [
+        1.6970982890564523,
+        17.69158925695516
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 794.6659465307351,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        340.57111994174363,
+        1135.2370664724788
+      ]
+    },
+    {
+      "model": "Model D",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 4821.318,
+      "profile1_batch10_generation_speed": 890.4433,
+      "aggregate_to_per_box_ratio_range": [
+        31.978787294502677,
+        32.03794033581649
+      ],
+      "per_box_throughput_rank_range": [
+        10,
+        10
+      ],
+      "inverse_per_box_ratio_to_A_median": 7.884234594215016,
+      "inverse_per_box_ratio_to_A_range": [
+        1.314470994733255,
+        11.472727048653573
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 551.8964215950512,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        236.52703782645048,
+        788.4234594215015
+      ]
+    },
+    {
+      "model": "Model E",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 46107.0249,
+      "profile1_batch10_generation_speed": 1394.7419,
+      "aggregate_to_per_box_ratio_range": [
+        8.999616475139478,
+        9.000470441430437
+      ],
+      "per_box_throughput_rank_range": [
+        2,
+        7
+      ],
+      "inverse_per_box_ratio_to_A_median": 0.6521363495894077,
+      "inverse_per_box_ratio_to_A_range": [
+        0.36331270854920666,
+        0.9081072605126568
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 45.64954447125854,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        19.56409048768223,
+        65.21363495894077
+      ]
+    },
+    {
+      "model": "Model F",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 23950.1084,
+      "profile1_batch10_generation_speed": 1206.62,
+      "aggregate_to_per_box_ratio_range": [
+        11.998289627606152,
+        12.001307751244141
+      ],
+      "per_box_throughput_rank_range": [
+        5,
+        8
+      ],
+      "inverse_per_box_ratio_to_A_median": 1.4079718652930033,
+      "inverse_per_box_ratio_to_A_range": [
+        0.2951254536706777,
+        1.7807503035657855
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 98.55803057051023,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        42.2391559587901,
+        140.79718652930035
+      ]
+    },
+    {
+      "model": "Model G",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 69008.2853,
+      "profile1_batch10_generation_speed": 1737.3216,
+      "aggregate_to_per_box_ratio_range": [
+        3.999916211359017,
+        4.000281410942779
+      ],
+      "per_box_throughput_rank_range": [
+        2,
+        3
+      ],
+      "inverse_per_box_ratio_to_A_median": 0.4838140457002697,
+      "inverse_per_box_ratio_to_A_range": [
+        0.1138370876178603,
+        0.5452609546556009
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 33.86698319901888,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        14.51442137100809,
+        48.38140457002697
+      ]
+    },
+    {
+      "model": "Model H",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 34337.0882,
+      "profile1_batch10_generation_speed": 1312.8924,
+      "aggregate_to_per_box_ratio_range": [
+        6.99944996141779,
+        7.000452687144826
+      ],
+      "per_box_throughput_rank_range": [
+        3,
+        5
+      ],
+      "inverse_per_box_ratio_to_A_median": 0.9738827603056085,
+      "inverse_per_box_ratio_to_A_range": [
+        0.19835386529393695,
+        1.138976912281266
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 68.17179322139259,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        29.216482809168255,
+        97.38827603056085
+      ]
+    },
+    {
+      "model": "Model I",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 90065.6029,
+      "profile1_batch10_generation_speed": 1512.2355,
+      "aggregate_to_per_box_ratio_range": [
+        2.999896854689456,
+        3.0000927401864583
+      ],
+      "per_box_throughput_rank_range": [
+        1,
+        1
+      ],
+      "inverse_per_box_ratio_to_A_median": 0.35110822582188256,
+      "inverse_per_box_ratio_to_A_range": [
+        0.07712635648835901,
+        0.414960556490096
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 24.57757580753178,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        10.533246774656476,
+        35.110822582188256
+      ]
+    },
+    {
+      "model": "Model J",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 19327.5641,
+      "profile1_batch10_generation_speed": 1217.1813,
+      "aggregate_to_per_box_ratio_range": [
+        12.999327369042664,
+        13.002492554098133
+      ],
+      "per_box_throughput_rank_range": [
+        6,
+        8
+      ],
+      "inverse_per_box_ratio_to_A_median": 1.6476384084950602,
+      "inverse_per_box_ratio_to_A_range": [
+        0.29949803668431896,
+        2.0891226084254186
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 115.33468859465421,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        49.42915225485181,
+        164.763840849506
+      ]
+    },
+    {
+      "model": "Model K",
+      "matched_configuration_count": 25,
+      "profile1_batch10_throughput_per_box": 30822.6012,
+      "profile1_batch10_generation_speed": 1418.5046,
+      "aggregate_to_per_box_ratio_range": [
+        8.999628432154687,
+        9.001290708032153
+      ],
+      "per_box_throughput_rank_range": [
+        4,
+        6
+      ],
+      "inverse_per_box_ratio_to_A_median": 1.094984864238999,
+      "inverse_per_box_ratio_to_A_range": [
+        0.2565938924414595,
+        1.2473969193546308
+      ],
+      "conditional_dense_equivalent_B_if_A_70B": 76.64894049672994,
+      "anchor_sensitivity_B_if_A_30_to_100B": [
+        32.84954592716997,
+        109.4984864238999
+      ]
+    }
+  ],
+  "profiles": [
+    {
+      "profile": "1",
+      "scenarios_input_output_cache": [
+        [
+          10000,
+          333,
+          0.5
+        ]
+      ],
+      "batch_sizes": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "record_count": 44
+    },
+    {
+      "profile": "2",
+      "scenarios_input_output_cache": [
+        [
+          10000,
+          4000,
+          0.0
+        ]
+      ],
+      "batch_sizes": [
+        10
+      ],
+      "record_count": 11
+    },
+    {
+      "profile": "3",
+      "scenarios_input_output_cache": [
+        [
+          3200,
+          400,
+          0.5
+        ]
+      ],
+      "batch_sizes": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "record_count": 44
+    },
+    {
+      "profile": "4",
+      "scenarios_input_output_cache": [
+        [
+          1000,
+          1000,
+          0.5
+        ]
+      ],
+      "batch_sizes": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "record_count": 44
+    },
+    {
+      "profile": "5",
+      "scenarios_input_output_cache": [
+        [
+          8000,
+          1000,
+          0.5
+        ]
+      ],
+      "batch_sizes": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "record_count": 44
+    },
+    {
+      "profile": "6",
+      "scenarios_input_output_cache": [
+        [
+          60000,
+          200,
+          0.9
+        ]
+      ],
+      "batch_sizes": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "record_count": 44
+    },
+    {
+      "profile": "7",
+      "scenarios_input_output_cache": [
+        [
+          17000,
+          3500,
+          0.7
+        ]
+      ],
+      "batch_sizes": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "record_count": 44
+    }
+  ],
+  "engineering_flag_counts": {
+    "ANOMALY_NONPOSITIVE_METRIC": 1,
+    "ANOMALY_THROUGHPUT_DROP_ON_SCALING": 15
+  },
+  "engineering_flags": [
+    {
+      "code": "ANOMALY_NONPOSITIVE_METRIC",
+      "rule": "Flag reported throughput, TTFT, or generation speed at or below zero",
+      "explanation": "Review nonpositive projection value(s): ttft_ms=0 ms.",
+      "sources": [
+        {
+          "model_name": "Model E",
+          "profile_id": "4",
+          "workbook_index": 31,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 171444 to 160195 t/s (6.56% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model A",
+          "profile_id": "4",
+          "workbook_index": 3,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model A",
+          "profile_id": "4",
+          "workbook_index": 3,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 320766 to 304103 t/s (5.19% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model A",
+          "profile_id": "7",
+          "workbook_index": 6,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model A",
+          "profile_id": "7",
+          "workbook_index": 6,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 110138 to 102077 t/s (7.32% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model B",
+          "profile_id": "4",
+          "workbook_index": 10,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model B",
+          "profile_id": "4",
+          "workbook_index": 10,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 300964 to 278127 t/s (7.59% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model B",
+          "profile_id": "7",
+          "workbook_index": 13,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model B",
+          "profile_id": "7",
+          "workbook_index": 13,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 57225.7 to 53719.6 t/s (6.13% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model C",
+          "profile_id": "4",
+          "workbook_index": 17,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model C",
+          "profile_id": "4",
+          "workbook_index": 17,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 20 to 30: aggregate throughput fell from 178008 to 165046 t/s (7.28% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model F",
+          "profile_id": "4",
+          "workbook_index": 38,
+          "record_index": 1,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model F",
+          "profile_id": "4",
+          "workbook_index": 38,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 165046 to 154578 t/s (6.34% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model F",
+          "profile_id": "4",
+          "workbook_index": 38,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model F",
+          "profile_id": "4",
+          "workbook_index": 38,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 430155 to 406412 t/s (5.52% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model F",
+          "profile_id": "7",
+          "workbook_index": 41,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model F",
+          "profile_id": "7",
+          "workbook_index": 41,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 227913 to 216181 t/s (5.15% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model G",
+          "profile_id": "4",
+          "workbook_index": 45,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model G",
+          "profile_id": "4",
+          "workbook_index": 45,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 20 to 30: aggregate throughput fell from 433208 to 407325 t/s (5.97% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model G",
+          "profile_id": "7",
+          "workbook_index": 48,
+          "record_index": 1,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model G",
+          "profile_id": "7",
+          "workbook_index": 48,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 407325 to 386674 t/s (5.07% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model G",
+          "profile_id": "7",
+          "workbook_index": 48,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model G",
+          "profile_id": "7",
+          "workbook_index": 48,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 172184 to 161451 t/s (6.23% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model H",
+          "profile_id": "4",
+          "workbook_index": 52,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model H",
+          "profile_id": "4",
+          "workbook_index": 52,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 410214 to 388065 t/s (5.40% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model H",
+          "profile_id": "7",
+          "workbook_index": 55,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model H",
+          "profile_id": "7",
+          "workbook_index": 55,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 200876 to 188205 t/s (6.31% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model I",
+          "profile_id": "4",
+          "workbook_index": 59,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model I",
+          "profile_id": "4",
+          "workbook_index": 59,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    },
+    {
+      "code": "ANOMALY_THROUGHPUT_DROP_ON_SCALING",
+      "rule": "Flag an aggregate throughput drop greater than 5% as batch size rises",
+      "explanation": "Batch 30 to 40: aggregate throughput fell from 184686 to 170679 t/s (7.58% drop; threshold >5%). This is a review signal, not an invalid row.",
+      "sources": [
+        {
+          "model_name": "Model K",
+          "profile_id": "4",
+          "workbook_index": 73,
+          "record_index": 2,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        },
+        {
+          "model_name": "Model K",
+          "profile_id": "4",
+          "workbook_index": 73,
+          "record_index": 3,
+          "filename": null,
+          "worksheet": null,
+          "sheet_row": null
+        }
+      ]
+    }
+  ]
+}

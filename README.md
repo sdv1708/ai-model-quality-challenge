@@ -12,19 +12,89 @@ one domain; `/api/*` and `/health` reach the backend and other paths reach the
 frontend. See [`docs/vercel-deployment.md`](./docs/vercel-deployment.md) for
 local services verification, deployment settings, and the live smoke procedure.
 
-## Local development
+## Task 1: run from a clean clone
 
-Issue #10: the learner's [backend checklist](./backend/ISSUE_10_BACKEND_GUIDE.md)
-contains the numbered implementation TODOs. The assistant owns frontend work.
-[`ISSUE_10_GUIDE.md`](./ISSUE_10_GUIDE.md) explains resilience and test boundaries.
+Install Git, Node.js **24.x** (includes npm), Python **3.12**, and
+[uv](https://docs.astral.sh/uv/getting-started/installation/). Python 3.13 is
+outside the backend's declared version range. GitHub access to this private
+repository is required to clone. Task 1 needs no API keys or environment file.
 
-Task 1 backend setup and verification commands live in
-[`backend/README.md`](./backend/README.md). The backend uses Python 3.12, FastAPI,
-Pydantic, openpyxl, pytest, Ruff, and mypy, with dependencies managed by `uv`.
+```powershell
+git clone https://github.com/sdv1708/ai-model-quality-challenge.git
+cd ai-model-quality-challenge
+cd backend
+uv sync --locked
+cd ../frontend
+npm ci
+cd ..
+```
 
-Task 1 frontend setup, launch, and browser-test commands live in
-[`frontend/README.md`](./frontend/README.md). Run the backend and frontend together
-to upload a workbook or inspect the bundled sample through the real API.
+From the repository root, start the API in terminal 1:
+
+```powershell
+cd backend
+uv run uvicorn perf_api.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+From the repository root, start the frontend in terminal 2:
+
+```powershell
+cd frontend
+npm run dev -- --port 5173 --strictPort
+```
+
+Open <http://127.0.0.1:5173>. The frontend proxies `/api` to the API on port 8000.
+The standalone health endpoint is <http://127.0.0.1:8000/health> and interactive
+API documentation is <http://127.0.0.1:8000/docs>. Stop each server with Ctrl+C.
+These shell commands also work in a POSIX shell; the extraction command below
+is specifically for PowerShell.
+
+Click **Load sample workbook** to use the bundled Model A workbook through the real API.
+To compare supplied models, extract the archive from the repository root:
+
+```powershell
+Expand-Archive -LiteralPath perf_data.zip -DestinationPath perf_data
+```
+
+Upload `perf_data/Model_A_profile_1/Model A profile 1.xlsx` together with
+`perf_data/Model_C_profile_1/Model C profile 1.xlsx`. Select profile 1 and the
+10,000-input / 333-output / 50%-cache scenario. For a concrete customer example,
+set minimum capacity to **400000**, minimum generation speed to **1200**, and
+maximum TTFT to **10**; leave context and cost limits empty. Model A has a GO
+configuration at batch 20; Model C is NO GO. Inspect their evidence and the
+engineering section. These are projection-based decisions. The engineering
+batch selector controls inspection; customer evaluation searches matching rows.
+
+On macOS/Linux, use `unzip perf_data.zip -d perf_data`. Git LFS is needed for
+Task 2's `Evals/**/*.jsonl`, but the Task 1 archive and public sample are ordinary
+tracked files. A Task 1-only clone can leave those evaluation files as LFS
+pointers; do not mistake them for usable Task 2 data.
+
+## Task 1 analysis and verification
+
+- [Architecture, audience choices, assumptions, and trade-offs](./docs/task1-analysis.md)
+- [Evidence-backed model A–K estimates and profile 1–7 use cases](./docs/task1-models-and-profiles.md)
+- [Clean-clone verification and issue #12 acceptance evidence](./docs/issue-12-evidence.md)
+- [Backend API and checks](./backend/README.md), [frontend and browser checks](./frontend/README.md)
+- [Deployment configuration and production smoke evidence](./docs/vercel-deployment.md)
+
+To check a fresh installation, run the following from the repository root:
+
+```powershell
+cd backend
+uv run pytest
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy
+cd ../frontend
+npx playwright install chromium
+npm run test:e2e:built
+```
+
+The built browser suite builds the frontend and starts its own API on **8018**
+and preview server on **4174**; keep those ports free. It exercises fresh-model
+uploads, both audiences, comparisons, validation recovery, and accessibility.
+For the earlier resilience work, see [`ISSUE_10_GUIDE.md`](./ISSUE_10_GUIDE.md).
 
 Read each task's spec in full before starting. Each lists hard requirements and a
 set of **forbidden trivial baselines** that will not pass the rubric.
@@ -33,12 +103,12 @@ set of **forbidden trivial baselines** that will not pass the rubric.
 
 ## What's in this repo
 
-| Path | What it is |
-|---|---|
-| `Task1_Performance.md` | Task 1 spec — performance UI for customer + internal audiences |
-| `Task2_Model_Quality.md` | Task 2 spec — benchmark/eval pruning inside `evalscope` |
-| `perf_data.zip` | Task 1 data — perf projections, Models A–K × 7 traffic profiles (`.xlsx`) |
-| `Evals/` | Task 2 data — model outputs (`predictions/`) + per-sample scores (`reviews/`) for LiveCodeBench, AA-LCR, MMMU |
+| Path                     | What it is                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `Task1_Performance.md`   | Task 1 spec — performance UI for customer + internal audiences                                                |
+| `Task2_Model_Quality.md` | Task 2 spec — benchmark/eval pruning inside `evalscope`                                                       |
+| `perf_data.zip`          | Task 1 data — perf projections, Models A–K × 7 traffic profiles (`.xlsx`)                                     |
+| `Evals/`                 | Task 2 data — model outputs (`predictions/`) + per-sample scores (`reviews/`) for LiveCodeBench, AA-LCR, MMMU |
 
 > **Git LFS:** the files under `Evals/` are stored via [Git LFS](https://git-lfs.github.com/).
 > Install it (`git lfs install`) before cloning, or the `.jsonl` files will appear as
@@ -49,6 +119,7 @@ set of **forbidden trivial baselines** that will not pass the rubric.
 ## The two tasks
 
 ### Task 1 — Performance UI for Customer and Product
+
 Turn an internal `.xlsx` perf projection sheet into something two audiences can act on:
 a customer/PM who needs a **go/no-go** signal, and an internal engineer who needs to
 **sanity-check** a projection. See [`Task1_Performance.md`](./Task1_Performance.md).
@@ -61,12 +132,14 @@ one or more perf sweeps to render and compare the views live** (we'll test it wi
 model). See [`Task1_Performance.md`](./Task1_Performance.md#deploying-for-free).
 
 ### Task 2 — Benchmark Compression for a Real Customer
+
 Prune coding (LiveCodeBench), long-context (AA-LCR), and (forward-looking) multimodal
 (MMMU) benchmarks to the smallest sample set that still gives a useful good-or-not
 signal. Your pruner **must live inside [`evalscope`](https://github.com/modelscope/evalscope)**
 as an upstream-quality extension. See [`Task2_Model_Quality.md`](./Task2_Model_Quality.md).
 
 Run contract:
+
 ```bash
 evalscope eval --model <model> --datasets live_code_bench --output ./results_full/
 evalscope eval --model <model> --datasets live_code_bench_pruned \

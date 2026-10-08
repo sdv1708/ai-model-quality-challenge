@@ -8,7 +8,7 @@ The engineering view sends every normalized workbook to `POST /api/v1/engineerin
 
 ## Prerequisites
 
-- Node.js 20 or newer
+- Node.js 24.x (the version used for clean-clone verification)
 - Python 3.12 and [uv](https://docs.astral.sh/uv/) for the backend
 
 ## Run locally
@@ -17,7 +17,7 @@ Start the API in one terminal:
 
 ```powershell
 cd backend
-uv sync
+uv sync --locked
 uv run uvicorn perf_api.main:app --reload
 ```
 

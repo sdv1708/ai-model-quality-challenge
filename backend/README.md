@@ -13,10 +13,10 @@ typed records.
 
 ```powershell
 cd backend
-uv sync
+uv sync --locked
 ```
 
-`uv sync` creates `backend/.venv` and installs both runtime and development dependencies
+`uv sync --locked` creates `backend/.venv` and installs both runtime and development dependencies
 from `uv.lock`.
 
 ## Run locally
