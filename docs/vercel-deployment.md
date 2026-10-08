@@ -143,7 +143,29 @@ Use the same procedure against `vercel dev --local` and the production origin:
 Vercel Functions enforce platform request and response size limits. The 4.5 MB
 payload limit applies to the entire multipart request and to JSON responses,
 not independently to each workbook. Test larger batches and avoid claiming
-unlimited uploads. Application-level upload limits are separate issue #11 work.
+unlimited uploads. The application relies on this platform limit and does not
+impose a smaller per-workbook limit. Oversized requests return HTTP 413 with
+Vercel's `FUNCTION_PAYLOAD_TOO_LARGE` error; the UI reports the failed upload.
+
+The frontend and API share one origin, so browser requests need no CORS
+configuration. Unknown API paths return JSON 404 responses. Invalid request
+bodies return JSON 422 responses, and workbook validation errors remain visible
+in the UI with an option to retry.
+
+## Verified production smoke test
+
+On 2026-10-08, commit `039aead` was verified on the production URL above:
+
+- All 32 browser tests passed, including single and multiple workbook uploads,
+  customer decisions, engineering diagnostics, accessibility, error recovery,
+  and keyboard navigation while diagnostics are loading.
+- The public frontend required no authentication; `/health` returned HTTP 200.
+- Unknown API routes returned JSON 404 responses, and a 5,000,000-byte upload
+  returned HTTP 413 from Vercel.
+- `/.env` and `/backend/pyproject.toml` returned HTTP 404. Public JavaScript
+  assets contained no recognizable private-key, AWS, GitHub, or API-token patterns.
+
+These checks used synthetic workbook fixtures and the bundled public sample.
 
 ## References
 
